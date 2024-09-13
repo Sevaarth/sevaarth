@@ -2,23 +2,27 @@
   "name": "sevaarth",
   "version": "0.1.0",
   "private": true,
- "scripts": {
+  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "next lint",
     "test": "jest"
   },
   "dependencies": {
     "next": "14.2.8",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "vercel": "^37.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.8",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.8",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "postcss": "^8.4.45",
+    "prettier": "^3.3.3",
     "tailwindcss": "^3.4.10"
   }
 }
