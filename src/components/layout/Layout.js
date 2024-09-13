@@ -1,8 +1,7 @@
-import Head from 'next/head';
+import Head from "next/head";
 import Navbar from "@/components/ui/NavBar";
 import Footer from "@/components/ui/Footer";
 import logo from "/public/images/logoSevaarth.png";
-
 
 export const metadata = {
   title: "Sevaarth",
@@ -14,8 +13,8 @@ const Layout = ({ children }) => {
     <>
       <Head>
         <title>{metadata.title}</title>
-        <meta name="Sevaarth Description" content={metadata.description}/>
-        <link rel="icon" href={logo}/> 
+        <meta name="Sevaarth Description" content={metadata.description} />
+        <link rel="icon" href={logo} />
       </Head>
       <div className="flex flex-col min-h-screen">
         <Navbar />

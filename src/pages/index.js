@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -14,11 +14,17 @@ export default function Home() {
             Empowering communities through care, education, and sustainability.
           </p>
           <div className="mt-8 space-x-4">
-            <Link href="/join" className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
-                Join Us
+            <Link
+              href="/join"
+              className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Join Us
             </Link>
-            <Link href="/donate" className="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
-                Donate Now
+            <Link
+              href="/donate"
+              className="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+            >
+              Donate Now
             </Link>
           </div>
         </div>
@@ -31,7 +37,7 @@ export default function Home() {
           {/* Card 1 */}
           <div className="p-6 bg-white shadow-lg rounded-lg">
             <Image
-              src="/elderly.jpg" 
+              src="/elderly.jpg"
               alt="Elderly Support"
               width={400}
               height={250}
@@ -45,7 +51,7 @@ export default function Home() {
           {/* Card 2 */}
           <div className="p-6 bg-white shadow-lg rounded-lg">
             <Image
-              src="/education.jpg" 
+              src="/education.jpg"
               alt="Child Education"
               width={400}
               height={250}
@@ -53,13 +59,14 @@ export default function Home() {
             />
             <h3 className="text-xl font-bold mt-4">Child Education</h3>
             <p className="mt-2 text-gray-600">
-              Sponsoring education to underprivileged children to break the cycle of poverty.
+              Sponsoring education to underprivileged children to break the
+              cycle of poverty.
             </p>
           </div>
           {/* Card 3 */}
           <div className="p-6 bg-white shadow-lg rounded-lg">
             <Image
-              src="/women.jpg" 
+              src="/women.jpg"
               alt="Women Empowerment"
               width={400}
               height={250}
@@ -67,13 +74,14 @@ export default function Home() {
             />
             <h3 className="text-xl font-bold mt-4">Women Empowerment</h3>
             <p className="mt-2 text-gray-600">
-              Providing job training and resources to support financial independence.
+              Providing job training and resources to support financial
+              independence.
             </p>
           </div>
           {/* Card 4 */}
           <div className="p-6 bg-white shadow-lg rounded-lg">
             <Image
-              src="/environment.jpg" 
+              src="/environment.jpg"
               alt="Environment Initiatives"
               width={400}
               height={250}
@@ -81,7 +89,8 @@ export default function Home() {
             />
             <h3 className="text-xl font-bold mt-4">Environment Initiatives</h3>
             <p className="mt-2 text-gray-600">
-              Organizing tree plantations and cleanliness drives for a sustainable future.
+              Organizing tree plantations and cleanliness drives for a
+              sustainable future.
             </p>
           </div>
         </div>
