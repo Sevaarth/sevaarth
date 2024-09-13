@@ -1,0 +1,48 @@
+name: Continuous Deployment
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    types:
+      - completed
+
+env:
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/stg'
+
+    steps:
+      - name: Download build artifacts from CI
+        uses: actions/download-artifact@v3
+        with:
+          name: nextjs-build
+
+      - name: Deploy to Vercel Preview
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+            ENVIRONMENT="development"
+          elif [ "${{ github.ref }}" == "refs/heads/stg" ]; then
+            ENVIRONMENT="staging"
+          fi
+          npx vercel --token $VERCEL_TOKEN --scope ${{ secrets.VERCEL_PROJECT_ID }} --env NEXT_PUBLIC_ENV=$ENVIRONMENT --prod=false
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download build artifacts from CI
+        uses: actions/download-artifact@v3
+        with:
+          name: nextjs-build
+
+      - name: Deploy to Vercel Production
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_PROD_TOKEN }}
+        run: |
+          npx vercel --token $VERCEL_TOKEN --scope ${{ secrets.VERCEL_PROJECT_ID }} --env NEXT_PUBLIC_ENV=production --prod=true
