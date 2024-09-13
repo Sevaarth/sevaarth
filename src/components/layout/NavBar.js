@@ -6,7 +6,6 @@ const Navbar = () => {
   return (
     <nav className="bg-gradient-to-r from-teal-400 via-blue-500 shadow-lg sticky fixed w-full z-10 top-0">
       <div className="container mx-auto flex justify-between items-center px-6 py-4 ">
-        {/* Logo */}
         <div className="flex">
           <Link href="/" aria-label="Home">
             <Image
@@ -19,7 +18,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Navigation Links */}
         <div className="flex space-x-6">
           <Link
             href="/"
@@ -28,19 +26,25 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            href="/about"
+            href={{
+              pathname: "/about",
+            }}
             className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
           >
             About
           </Link>
           <Link
-            href="/join"
+            href={{
+              pathname: "/join",
+            }}
             className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
           >
             Join Us
           </Link>
           <Link
-            href="/donate"
+            href={{
+              pathname: "/donate",
+            }}
             className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
           >
             Donate
