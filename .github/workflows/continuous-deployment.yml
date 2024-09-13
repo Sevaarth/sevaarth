@@ -11,39 +11,57 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
-  deploy-preview:
+  deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/stg'
+    strategy:
+      matrix:
+        environment: [dev, stg, main]
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Download build artifacts from CI
+        id: download-artifact
         uses: actions/download-artifact@v3
         with:
           name: nextjs-build
+        continue-on-error: true
 
-      - name: Deploy to Vercel Preview
+      - name: Cache Node.js dependencies
+        if: steps.download-artifact.outputs.found != 'true'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        if: steps.download-artifact.outputs.found != 'true'
+        run: npm ci
+
+      - name: Build app
+        if: steps.download-artifact.outputs.found != 'true'
+        run: npm run build
+
+      - name: Upload build artifacts (Optional)
+        if: steps.download-artifact.outputs.found != 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: nextjs-build
+          path: .next
+
+      - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+          if [ "${{ matrix.environment }}" == "dev" ]; then
             ENVIRONMENT="development"
-          elif [ "${{ github.ref }}" == "refs/heads/stg" ]; then
+          elif [ "${{ matrix.environment }}" == "stg" ]; then
             ENVIRONMENT="staging"
+          elif [ "${{ matrix.environment }}" == "main" ]; then
+            ENVIRONMENT="production"
+            VERCEL_TOKEN=${{ secrets.VERCEL_PROD_TOKEN }}
           fi
-          npx vercel --token $VERCEL_TOKEN --scope ${{ secrets.VERCEL_PROJECT_ID }} --env NEXT_PUBLIC_ENV=$ENVIRONMENT --prod=false
-
-  deploy-production:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Download build artifacts from CI
-        uses: actions/download-artifact@v3
-        with:
-          name: nextjs-build
-
-      - name: Deploy to Vercel Production
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_PROD_TOKEN }}
-        run: |
-          npx vercel --token $VERCEL_TOKEN --scope ${{ secrets.VERCEL_PROJECT_ID }} --env NEXT_PUBLIC_ENV=production --prod=true
+          npx vercel --token $VERCEL_TOKEN --scope ${{ secrets.VERCEL_PROJECT_ID }} --env NEXT_PUBLIC_ENV=$ENVIRONMENT --prod=${{ matrix.environment == 'main' }}
