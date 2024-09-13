@@ -1,22 +1,17 @@
 import React from "react";
-import Head from "next/head";
 import "../styles/globals.css";
-import logo from "/public/images/logoSevaarth.png";
-
-export const metadata = {
-  title: "Sevaarth",
-  description: "सेवा का संकल्प, सेवार्थ के साथ।",
-};
+import Layout from "@/components/layout/Layout";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>{metadata.title}</title>
-        <meta name="Sevaarth Description" content={metadata.description} />
-        <link rel="icon" href={logo} />
+        <title>Sevaarth</title>
       </Head>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </>
   );
 }

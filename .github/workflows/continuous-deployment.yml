@@ -1,15 +1,13 @@
 name: Continuous Deployment
-env:
-  VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}  
-  VERCEL_TOKEN: ${{ secrets.VERCEL_PROD_TOKEN }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
-  push:
-    branches:
-      - dev
-      - stg
-      - main
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    types:
+      - completed
+
+env:
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
   deploy-preview:
