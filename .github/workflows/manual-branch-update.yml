@@ -34,5 +34,5 @@ jobs:
 
       - name: Merge source branch into target branch
         run: |
-          git merge ${{ github.event.inputs.source-branch }} --no-ff --commit -m "Merge branch '${{ github.event.inputs.source-branch }}' into '${{ github.event.inputs.target-branch }}'"
+          git merge ${{ github.event.inputs.source-branch }} --no-ff --allow-unrelated-histories -m "Merge branch '${{ github.event.inputs.source-branch }}' into '${{ github.event.inputs.target-branch }}'"
           git push origin ${{ github.event.inputs.target-branch }}
