@@ -15,8 +15,11 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success' && (github.event.workflow_run.head_branch == 'dev' || github.event.workflow_run.head_branch == 'stg')
 
     steps:
-      - name: List downloaded files
-        run: ls -la .next
+      - name: Print current directory
+        run: pwd
+
+      - name: List all files in the current directory
+        run: ls -la
 
       - name: Download build artifacts from CI
         id: download-artifact
@@ -24,6 +27,9 @@ jobs:
         with:
           name: nextjs-build
         continue-on-error: false
+
+      - name: List downloaded files in .next directory
+        run: ls -la .next
 
       - name: Check if artifacts were downloaded
         id: artifact-check
@@ -51,12 +57,21 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
 
     steps:
+      - name: Print current directory
+        run: pwd
+
+      - name: List all files in the current directory
+        run: ls -la
+
       - name: Download build artifacts from CI
         id: download-artifact
         uses: actions/download-artifact@v3
         with:
           name: nextjs-build
         continue-on-error: false
+
+      - name: List downloaded files in .next directory
+        run: ls -la .next
 
       - name: Check if artifacts were downloaded
         id: artifact-check
