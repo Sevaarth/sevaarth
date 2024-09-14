@@ -12,9 +12,12 @@ env:
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/stg')
+    if: github.event.workflow_run.conclusion == 'success' && (github.event.workflow_run.head_branch == 'dev' || github.event.workflow_run.head_branch == 'stg')
 
     steps:
+      - name: List downloaded files
+        run: ls -la .next
+
       - name: Download build artifacts from CI
         id: download-artifact
         uses: actions/download-artifact@v3
@@ -36,16 +39,16 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+          if [ "${{ github.event.workflow_run.head_branch }}" == "dev" ]; then
             ENVIRONMENT="development"
-          elif [ "${{ github.ref }}" == "refs/heads/stg" ]; then
+          elif [ "${{ github.event.workflow_run.head_branch }}" == "stg" ]; then
             ENVIRONMENT="staging"
           fi
           npx vercel --token $VERCEL_TOKEN --scope ${{ secrets.VERCEL_PROJECT_ID }} --env NEXT_PUBLIC_ENV=$ENVIRONMENT --prod=false
 
   deploy-production:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main'
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
 
     steps:
       - name: Download build artifacts from CI
