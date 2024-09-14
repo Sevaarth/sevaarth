@@ -1,7 +1,7 @@
 name: Continuous Integration
 
 on:
-  pull_request:
+  push:
     branches:
       - dev
       - stg
@@ -71,4 +71,3 @@ jobs:
           name: nextjs-build
           path: .next
           include-hidden-files: true
-          if-no-files-found: warn
