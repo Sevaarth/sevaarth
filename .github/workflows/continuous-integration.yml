@@ -1,7 +1,7 @@
 name: Continuous Integration
 
 on:
-  pull_request:
+  push:
     branches:
       - dev
       - stg
@@ -29,9 +29,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          key: node-modules-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            node-modules-
 
       - name: Install dependencies
         run: npm ci
@@ -55,13 +55,19 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            node-modules-
 
       - name: Build Next.js app
         run: npm run build
+
+      - name: List `.next` directory contents
+        run: ls -la .next
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: nextjs-build
           path: .next
+          include-hidden-files: true

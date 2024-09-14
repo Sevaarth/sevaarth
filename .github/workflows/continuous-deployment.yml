@@ -12,13 +12,25 @@ env:
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/stg'
+    if: github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/stg')
 
     steps:
       - name: Download build artifacts from CI
+        id: download-artifact
         uses: actions/download-artifact@v3
         with:
           name: nextjs-build
+        continue-on-error: false
+
+      - name: Check if artifacts were downloaded
+        id: artifact-check
+        run: echo "Artifact exists =${{ steps.download-artifact.outputs.found }}"
+
+      - name: Fail if artifacts are missing
+        if: steps.download-artifact.outputs.found != 'true'
+        run: |
+          echo "No build artifacts found, stopping deployment."
+          exit 1
 
       - name: Deploy to Vercel Preview
         env:
@@ -33,13 +45,25 @@ jobs:
 
   deploy-production:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Download build artifacts from CI
+        id: download-artifact
         uses: actions/download-artifact@v3
         with:
           name: nextjs-build
+        continue-on-error: false
+
+      - name: Check if artifacts were downloaded
+        id: artifact-check
+        run: echo "Artifact exists =${{ steps.download-artifact.outputs.found }}"
+
+      - name: Fail if artifacts are missing
+        if: steps.download-artifact.outputs.found != 'true'
+        run: |
+          echo "No build artifacts found, stopping deployment."
+          exit 1
 
       - name: Deploy to Vercel Production
         env:
