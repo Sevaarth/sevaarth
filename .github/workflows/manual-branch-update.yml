@@ -34,5 +34,15 @@ jobs:
 
       - name: Merge source branch into target branch
         run: |
-          git merge ${{ github.event.inputs.source-branch }} --no-ff --commit -m "Merge branch '${{ github.event.inputs.source-branch }}' into '${{ github.event.inputs.target-branch }}'"
-          git push origin ${{ github.event.inputs.target-branch }}
+          git merge ${{ github.event.inputs.source-branch }} --no-ff --allow-unrelated-histories || true
+
+      - name: Resolve merge conflicts
+        if: failure()
+        run: |
+          git merge --abort
+          echo "Merge conflict detected. Please resolve conflicts manually."
+          exit 1
+
+      - name: Push changes
+        if: success()
+        run: git push origin ${{ github.event.inputs.target-branch }}
