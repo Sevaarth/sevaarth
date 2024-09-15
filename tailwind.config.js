@@ -24,6 +24,9 @@ module.exports = {
         mediumBlue: "#134B70", // Medium Blue
         lightBlue: "#508C9B", // Light Blue
       },
+      fontFamily: {
+        Italianno: ["Italianno"],
+      },
     },
   },
   plugins: [],

@@ -1,4 +1,4 @@
-export default function JoinUs() {
+export default function OurInitiatives() {
   return (
     <div className="container mx-auto py-16">
       <h1 className="text-5xl font-bold text-primary text-center">Join Us</h1>

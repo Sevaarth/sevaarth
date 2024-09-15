@@ -1,12 +1,14 @@
-import Hero from "@/components/ui/Hero";
 import OurWork from "@/components/ui/OurWork";
 import ProgrammesSection from "@/components/ui/ProgrammesSection";
-export default function Home() {
+import React from "react";
+
+const OurIntiatives = () => {
   return (
     <>
-      <Hero />
-      <OurWork />
       <ProgrammesSection />
+      <OurWork />
     </>
   );
-}
+};
+
+export default OurIntiatives;
