@@ -93,7 +93,7 @@ jobs:
           if [ "${{ github.ref }}" == "refs/heads/stg" ]; then
             ENVIRONMENT="staging"
           fi
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=$ENVIRONMENT --prod=false
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=$ENVIRONMENT --prod=false --confirm
 
   deploy-production:
     name: Deploy to Production
@@ -115,4 +115,4 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PROD_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=production --prod=true
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=production --prod=true --confirm
