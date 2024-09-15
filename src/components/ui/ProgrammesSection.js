@@ -1,11 +1,11 @@
 // components/ProgrammesSection.js
 import Image from "next/image";
-import EDUCATION from "@/public/images/EDUCATION.png";
-import HEALTHCARE from "@/public/images/HEALTHCARE.png";
-import WOMEN_EMPOWERMENT from "@/public/images/WOMEN EMPOWERMENT.png";
-import Livelihood from "@/public/images/Livelihood.png";
-import EMPOWERING_GRASSROOTS from "@/public/images/EMPOWERING GRASSROOTS.jpeg";
-import DISASTER_RESPONSE from "@/public/images/DISASTER RESPONSE.webp";
+import EDUCATION from "/public/images/EDUCATION.png";
+import HEALTHCARE from "/public/images/HEALTHCARE.png";
+import WOMEN_EMPOWERMENT from "/public/images/WOMEN EMPOWERMENT.png";
+import Livelihood from "/public/images/Livelihood.png";
+import EMPOWERING_GRASSROOTS from "/public/images/EMPOWERING GRASSROOTS.jpeg";
+import DISASTER_RESPONSE from "/public/images/DISASTER RESPONSE.webp";
 
 export default function ProgrammesSection() {
   const programmes = [
