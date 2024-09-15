@@ -8,7 +8,7 @@ const OurWork = () => {
         {/* Card 1 */}
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <Image
-            src="/elderly.jpg"
+            src=""
             alt="Elderly Support"
             width={400}
             height={250}
@@ -23,7 +23,7 @@ const OurWork = () => {
         {/* Card 2 */}
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <Image
-            src="/education.jpg"
+            src=""
             alt="Child Education"
             width={400}
             height={250}
@@ -39,7 +39,7 @@ const OurWork = () => {
         {/* Card 3 */}
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <Image
-            src="/women.jpg"
+            src=""
             alt="Women Empowerment"
             width={400}
             height={250}
@@ -55,7 +55,7 @@ const OurWork = () => {
         {/* Card 4 */}
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <Image
-            src="/environment.jpg"
+            src=""
             alt="Environment Initiatives"
             width={400}
             height={250}
