@@ -14,6 +14,7 @@ on:
 
 jobs:
   update-branch:
+    name: Merge Source Branch into Target Branch
     runs-on: ubuntu-latest
 
     steps:
@@ -27,12 +28,57 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Check if source branch exists
+        run: |
+          if ! git rev-parse --verify ${{ github.event.inputs.source-branch }}; then
+            echo "Source branch ${{ github.event.inputs.source-branch }} does not exist!"
+            exit 1
+          fi
+
+      - name: Check if target branch exists
+        run: |
+          if ! git rev-parse --verify ${{ github.event.inputs.target-branch }}; then
+            echo "Target branch ${{ github.event.inputs.target-branch }} does not exist!"
+            exit 1
+          fi
+
       - name: Checkout target branch
         run: |
-          git fetch origin ${{ github.event.inputs.target-branch }}:${{ github.event.inputs.target-branch }}
           git checkout ${{ github.event.inputs.target-branch }}
 
       - name: Merge source branch into target branch
         run: |
-          git merge ${{ github.event.inputs.source-branch }} --no-ff --commit -m "Merge branch '${{ github.event.inputs.source-branch }}' into '${{ github.event.inputs.target-branch }}'"
-          git push origin ${{ github.event.inputs.target-branch }}
+          git merge ${{ github.event.inputs.source-branch }} --no-ff --no-commit || true
+
+      - name: Check for merge conflicts
+        run: |
+          if git ls-files -u | grep "."; then
+            echo "Merge conflict detected. Please resolve conflicts manually."
+            git merge --abort
+            exit 1
+          fi
+
+      - name: Commit the merge if no conflicts
+        if: success()
+        run: |
+          git commit -m "Merged ${{ github.event.inputs.source-branch }} into ${{ github.event.inputs.target-branch }}"
+
+      - name: Push changes to target branch
+        if: success()
+        run: git push origin ${{ github.event.inputs.target-branch }}
+
+      - name: Trigger CI/CD workflow (Optional)
+        if: success()
+        run: |
+          echo "Triggering CI/CD for branch ${{ github.event.inputs.target-branch }}..."
+          gh workflow run "Continuous Integration" --ref ${{ github.event.inputs.target-branch }}
+
+      - name: Cleanup after failed merge
+        if: failure()
+        run: |
+          echo "Cleaning up after failed merge."
+          git reset --hard HEAD
+          git clean -fd
