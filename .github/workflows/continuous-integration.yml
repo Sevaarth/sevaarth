@@ -9,7 +9,7 @@ on:
 
 jobs:
   ci-test:
-    name: Test and Lint
+    name: Lint and Test
     runs-on: ubuntu-latest
 
     strategy:
@@ -39,8 +39,14 @@ jobs:
       - name: Run Linting
         run: npm run lint
 
-      # - name: Run Tests
+      # - name: Run Unit Tests
       #   run: npm run test
+
+      # - name: Upload test results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: test-results
+      #     path: ./test-results
 
   ci-build:
     name: Build App
@@ -61,9 +67,6 @@ jobs:
 
       - name: Build Next.js app
         run: npm run build
-
-      - name: List `.next` directory contents
-        run: ls -la .next
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
