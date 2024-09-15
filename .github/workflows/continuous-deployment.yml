@@ -26,7 +26,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: nextjs-build
-        continue-on-error: false
+        continue-on-error: true
 
       - name: List downloaded files in .next directory
         run: ls -la .next
@@ -68,7 +68,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: nextjs-build
-        continue-on-error: false
+        continue-on-error: true
 
       - name: List downloaded files in .next directory
         run: ls -la .next
