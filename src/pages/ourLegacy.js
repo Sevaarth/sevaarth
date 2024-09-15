@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Ashok_chakra from "@/../../public/images/ashok chakra.png";
-import sevaarth_curve from "@/../../public/images/sevaarth curve.png";
+import Ashok_chakra from "@/public/images/ashok chakra.png";
+
 export default function OurLegacy() {
   return (
     <>
