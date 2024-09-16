@@ -155,7 +155,7 @@ export default function GetInvolved() {
               <p className="text-brown text-sm font-medium mb-1">
                 Or select a preset amount:
               </p>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2  flex-wrap justify-center gap-1">
                 {presetAmounts.map((amount) => (
                   <button
                     key={amount}
