@@ -5,12 +5,16 @@ export default function OurLegacy() {
   return (
     <>
       <div className=" pt-5 md:w-9/12 text-center md:text-end ">
-        <i className=" md:text-8xl text-7xl  font-Italianno text-gray-400">sevaarth</i>
+        <i className=" md:text-8xl text-7xl  font-Italianno text-gray-400">
+          sevaarth
+        </i>
       </div>
 
       <div className="flex flex-col-reverse md:flex-row items-center pb-16  px-[13%]">
         <div className="container mx-auto  ">
-          <h1 className="text-5xl text-center md:text-start pl-[2%]">ABOUT US</h1>
+          <h1 className="text-5xl text-center md:text-start pl-[2%]">
+            ABOUT US
+          </h1>
           <p className="text-base md:text-xl text-gray-700 mt-4 md:mt-8 leading-relaxed">
             Sevaarth is a dedicated initiative that aims to provide essential
             support to elderly individuals within the community who are facing
