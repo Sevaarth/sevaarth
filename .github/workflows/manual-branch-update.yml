@@ -3,82 +3,92 @@ name: Manual Branch Update
 on:
   workflow_dispatch:
     inputs:
-      source-branch:
-        description: "Source branch to merge from"
+      from-branch:
+        description: "Source branch (dev or stg)"
         required: true
         default: "dev"
-      target-branch:
-        description: "Target branch to merge into"
+        type: choice
+        options: ["dev", "stg"]
+
+      to-branch:
+        description: "Target branch (stg or main)"
         required: true
         default: "stg"
+        type: choice
+        options: ["stg", "main"]
 
 jobs:
-  update-branch:
-    name: Merge Source Branch into Target Branch
+  check-permissions:
+    name: Check Permissions
     runs-on: ubuntu-latest
+    outputs:
+      is-admin: ${{ steps.check-permissions.outputs.is-admin }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check if user is admin
+        id: check-permissions
+        run: |
+          # Retrieve the admin username from secrets
+          ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
+          # Get the GitHub username of the person who triggered the workflow
+          USERNAME=${{ github.actor }}
+          if [ "$USERNAME" == "$ADMIN_USERNAME" ]; then
+            echo "is-admin=true" >> $GITHUB_ENV
+          else
+            echo "is-admin=false" >> $GITHUB_ENV
+          fi
+
+      - name: Fail if not admin
+        if: ${{ env.is-admin == 'false' }}
+        run: |
+          echo "You must be an admin to trigger this workflow."
+          exit 1
+
+  create-pull-request:
+    name: Create Pull Request from ${{ inputs.from-branch }} to ${{ inputs.to-branch }}
+    runs-on: ubuntu-latest
+    needs: check-permissions
 
     steps:
-      - name: Checkout source branch
-        uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v5
         with:
-          ref: ${{ github.event.inputs.source-branch }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Merge ${{ inputs.from-branch }} into ${{ inputs.to-branch }}"
+          branch: ${{ inputs.from-branch }}
+          base: ${{ inputs.to-branch }}
+          title: "Merge ${{ inputs.from-branch }} into ${{ inputs.to-branch }}"
+          body: "This is an automated pull request created to merge ${{ inputs.from-branch }} into ${{ inputs.to-branch }}."
+          draft: false
 
-      - name: Configure Git
+  approve-pull-request:
+    name: Auto Approve Pull Request
+    runs-on: ubuntu-latest
+    needs: create-pull-request
+
+    steps:
+      - name: Approve PR
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  merge-pull-request:
+    name: Merge the Pull Request
+    runs-on: ubuntu-latest
+    needs: approve-pull-request
+
+    steps:
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh
+
+      - name: Merge PR via GitHub CLI
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-      - name: Fetch all branches
-        run: git fetch --all
-
-      - name: Check if source branch exists
-        run: |
-          if ! git rev-parse --verify ${{ github.event.inputs.source-branch }}; then
-            echo "Source branch ${{ github.event.inputs.source-branch }} does not exist!"
-            exit 1
-          fi
-
-      - name: Check if target branch exists
-        run: |
-          if ! git rev-parse --verify ${{ github.event.inputs.target-branch }}; then
-            echo "Target branch ${{ github.event.inputs.target-branch }} does not exist!"
-            exit 1
-          fi
-
-      - name: Checkout target branch
-        run: |
-          git checkout ${{ github.event.inputs.target-branch }}
-
-      - name: Merge source branch into target branch
-        run: |
-          git merge ${{ github.event.inputs.source-branch }} --no-ff --no-commit || true
-
-      - name: Check for merge conflicts
-        run: |
-          if git ls-files -u | grep "."; then
-            echo "Merge conflict detected. Please resolve conflicts manually."
-            git merge --abort
-            exit 1
-          fi
-
-      - name: Commit the merge if no conflicts
-        if: success()
-        run: |
-          git commit -m "Merged ${{ github.event.inputs.source-branch }} into ${{ github.event.inputs.target-branch }}"
-
-      - name: Push changes to target branch
-        if: success()
-        run: git push origin ${{ github.event.inputs.target-branch }}
-
-      - name: Trigger CI/CD workflow (Optional)
-        if: success()
-        run: |
-          echo "Triggering CI/CD for branch ${{ github.event.inputs.target-branch }}..."
-          gh workflow run "Continuous Integration" --ref ${{ github.event.inputs.target-branch }}
-
-      - name: Cleanup after failed merge
-        if: failure()
-        run: |
-          echo "Cleaning up after failed merge."
-          git reset --hard HEAD
-          git clean -fd
+          gh pr merge ${{ needs.create-pull-request.outputs.pull_request_number }} --merge --repo ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

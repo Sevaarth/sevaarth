@@ -4,36 +4,57 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Select branch to deploy"
+        description: "Branch to deploy (dev or stg)"
         required: true
         default: "dev"
         type: choice
-        options:
-          - dev
-          - stg
+        options: ["dev", "stg"]
 
 jobs:
-  deploy-preview:
+  check-permissions:
+    name: Check Permissions
     runs-on: ubuntu-latest
+    outputs:
+      is-admin: ${{ steps.check-permissions.outputs.is-admin }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check if user is admin
+        id: check-permissions
+        run: |
+          # Retrieve the admin username from secrets
+          ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
+          # Get the GitHub username of the person who triggered the workflow
+          USERNAME=${{ github.actor }}
+          if [ "$USERNAME" == "$ADMIN_USERNAME" ]; then
+            echo "is-admin=true" >> $GITHUB_ENV
+          else
+            echo "is-admin=false" >> $GITHUB_ENV
+          fi
+
+      - name: Fail if not admin
+        if: ${{ env.is-admin == 'false' }}
+        run: |
+          echo "You must be an admin to trigger this workflow."
+          exit 1
+
+  deploy-preview:
+    name: Deploy to Vercel Preview
+    runs-on: ubuntu-latest
+    needs: check-permissions
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.inputs.branch }}
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: nextjs-build
+      - name: Install Vercel CLI
+        run: npm install -g vercel
 
       - name: Deploy to Vercel Preview
+        run: |
+          BRANCH=${{ github.event.inputs.branch }}
+          echo "Deploying branch $BRANCH to Vercel preview environment."
+          npx vercel --token ${{ secrets.VERCEL_PREVIEW_TOKEN }} --env NEXT_PUBLIC_ENV=preview --prod=false --confirm --branch $BRANCH
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
-        run: |
-          if [ "${{ github.event.inputs.branch }}" == "dev" ]; then
-            ENVIRONMENT="development"
-          elif [ "${{ github.event.inputs.branch }}" == "stg" ]; then
-            ENVIRONMENT="staging"
-          fi
-          npx vercel --token $VERCEL_TOKEN --scope ${{ secrets.VERCEL_PROJECT_ID }} --env NEXT_PUBLIC_ENV=$ENVIRONMENT --prod=false
+
+      - name: Notify Success
+        run: echo "Deployment to Vercel preview environment for branch ${{ github.event.inputs.branch }} is complete."
