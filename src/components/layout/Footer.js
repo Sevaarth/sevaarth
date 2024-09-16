@@ -20,10 +20,15 @@ const Footer = () => {
         {/* Logo and description */}
         <div className="w-full md:w-1/4   flex-shrink-0 text-center md:text-left mb-8 md:mb-0">
           <a className="flex title-font font-medium items-center justify-center md:justify-start text-darkBlue">
-            <Image className="w-20 rounded-full" src={logo} alt="Sevaarth Logo" />
+            <Image
+              className="w-20 rounded-full"
+              src={logo}
+              alt="Sevaarth Logo"
+            />
           </a>
           <p className="mt-2 text-sm md:w-4/5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor
           </p>
           {/* Social media icons */}
           <div className="flex mt-4 justify-center md:justify-start space-x-3 text-primary">
@@ -64,7 +69,8 @@ const Footer = () => {
               Get in touch
             </h2>
             <p className="text-gray-300 text-left">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor
             </p>
             <div className="flex mt-4">
               <input
