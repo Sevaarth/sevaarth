@@ -48,7 +48,9 @@ function SignUpForm({ onSubmit }) {
           onChange={handleChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
         />
-        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+        {errors.name && (
+          <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+        )}
       </div>
 
       <div className="mb-6">
@@ -62,7 +64,9 @@ function SignUpForm({ onSubmit }) {
           onChange={handleChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
         />
-        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+        {errors.email && (
+          <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+        )}
       </div>
 
       <button

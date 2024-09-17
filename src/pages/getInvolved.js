@@ -4,12 +4,10 @@ import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
 
 export default function GetInvolved() {
-  
-
   return (
     <>
-    <Donate/>
-    <SignUp/>
+      <Donate />
+      <SignUp />
     </>
   );
 }
