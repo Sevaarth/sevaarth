@@ -2,7 +2,6 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Home from "@/pages/index";
 
-// Mocking child components with display names
 jest.mock("@/components/ui/Hero", () => {
   const MockHero = () => <div>Hero Component</div>;
   MockHero.displayName = "Hero";
@@ -25,7 +24,6 @@ describe("Home Page", () => {
   it("renders Hero, OurWork, and ProgrammesSection components", () => {
     render(<Home />);
 
-    // Assert that all three mocked components are rendered
     expect(screen.getByText("Hero Component")).toBeInTheDocument();
     expect(screen.getByText("Our Work Component")).toBeInTheDocument();
     expect(
