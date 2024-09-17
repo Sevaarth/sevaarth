@@ -41,42 +41,32 @@ jobs:
 
   lint:
     name: 🔍 Lint Code
-    needs: setup-environment
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Run Linting
-        run: npm run lint
-
-  test:
-    name: 🧪 Run Test Cases
     needs: setup-environment
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Check for Test Files
-        id: check-tests
-        run: |
-          if ls src/tests/*.test.js 1> /dev/null 2>&1; then
-            echo "test-files-exist=true" >> $GITHUB_ENV
-          else
-            echo "No test files found."
-            echo "test-files-exist=false" >> $GITHUB_ENV
-            exit 0
-          fi
+      - name: Run Linting
+        run: npm run lint
 
-      - name: Run Test Cases
-        if: env.test-files-exist == 'true'
-        run: |
-          npm run test
+  test:
+    name: 🧪 Run Unit Tests
+    runs-on: ubuntu-latest
+    needs: setup-environment
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Unit Tests
+        run: npm run test
 
   build-app:
     name: 🛠️ Build Application
-    needs: [lint, test]
     runs-on: ubuntu-latest
+    needs: [lint, test]
 
     steps:
       - name: Checkout Code
