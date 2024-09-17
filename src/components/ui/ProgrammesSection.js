@@ -10,7 +10,7 @@ import DISASTER_RESPONSE from "/public/images/DISASTER RESPONSE.webp";
 export default function ProgrammesSection() {
   const programmes = [
     {
-      title: "Education",
+      title: "Underprivileged child education",
       description: "Education, nutrition and holistic development of children",
       icon: EDUCATION,
       bgColor: "bg-yellow-200",
@@ -33,7 +33,7 @@ export default function ProgrammesSection() {
       textColor: "text-blue-600",
     },
     {
-      title: "Livelihood",
+      title: "plantation and cleanliness",
       description:
         "Skill training and placement support for underprivileged youth",
       icon: Livelihood,
@@ -41,7 +41,7 @@ export default function ProgrammesSection() {
       textColor: "text-orange-600",
     },
     {
-      title: "Empowering Grassroots",
+      title: "cloth collection & donation",
       description:
         "Helping community-based organizations become locally sustainable",
       icon: EMPOWERING_GRASSROOTS,
@@ -49,7 +49,7 @@ export default function ProgrammesSection() {
       textColor: "text-green-600",
     },
     {
-      title: "Disaster Response",
+      title: "supporting elderly individuals",
       description:
         "Reach out and respond to the needs of the disaster-affected people",
       icon: DISASTER_RESPONSE,
@@ -80,7 +80,7 @@ export default function ProgrammesSection() {
                 <Image src={programme.icon} alt={programme.title} width={70} />
               </div>
               {/* Title and Description */}
-              <div className="w-[60%]">
+              <div className="w-[70%]">
                 <h3
                   className={`text-2xl font-bold ${programme.textColor} mb-2 `}
                 >

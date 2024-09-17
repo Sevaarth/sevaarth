@@ -13,7 +13,7 @@ const Hero = () => {
         <div className="mt-8 space-x-4">
           <Link
             href={{
-              pathname: "/join",
+              pathname: "/getInvolved",
             }}
             className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
           >
@@ -21,7 +21,7 @@ const Hero = () => {
           </Link>
           <Link
             href={{
-              pathname: "/donate",
+              pathname: "/getInvolved",
             }}
             className="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
           >
