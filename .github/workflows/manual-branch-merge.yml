@@ -1,4 +1,4 @@
-name: Manual Branch Update
+name: Deploy to other Environment
 
 on:
   workflow_dispatch:
