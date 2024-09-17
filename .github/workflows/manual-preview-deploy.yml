@@ -12,49 +12,71 @@ on:
 
 jobs:
   check-permissions:
-    name: Check Permissions
+    name: 🔒 Check Permissions
     runs-on: ubuntu-latest
     outputs:
       is-admin: ${{ steps.check-permissions.outputs.is-admin }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Check if user is admin
+      - name: 🧑‍💼 Verify Admin Access
         id: check-permissions
         run: |
-          # Retrieve the admin username from secrets
-          ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
-          # Get the GitHub username of the person who triggered the workflow
-          USERNAME=${{ github.actor }}
+          ADMIN_USERNAME="${{ secrets.ADMIN_USERNAME }}"
+          USERNAME="${{ github.actor }}"
+
           if [ "$USERNAME" == "$ADMIN_USERNAME" ]; then
             echo "is-admin=true" >> $GITHUB_ENV
           else
             echo "is-admin=false" >> $GITHUB_ENV
-          fi
+        continue-on-error: false
 
-      - name: Fail if not admin
+      - name: ❌ Fail if Not Admin
         if: ${{ env.is-admin == 'false' }}
         run: |
           echo "You must be an admin to trigger this workflow."
           exit 1
 
   deploy-preview:
-    name: Deploy to Vercel Preview
+    name: 🚀 Deploy to Vercel Preview
     runs-on: ubuntu-latest
     needs: check-permissions
 
     steps:
-      - name: Install Vercel CLI
-        run: npm install -g vercel
+      - name: 🔄 Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Deploy to Vercel Preview
+      - name: 📦 Cache Vercel CLI
+        uses: actions/cache@v4
+        with:
+          path: ~/.vercel
+          key: vercel-cli-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            vercel-cli-${{ runner.os }}-
+
+      - name: 🔄 Install Vercel CLI if Not Cached
         run: |
-          BRANCH=${{ github.event.inputs.branch }}
-          echo "Deploying branch $BRANCH to Vercel preview environment."
-          npx vercel --token ${{ secrets.VERCEL_PREVIEW_TOKEN }} --env NEXT_PUBLIC_ENV=preview --prod=false --confirm --branch $BRANCH
+          if ! command -v vercel &> /dev/null; then
+            echo "Vercel CLI not found, installing..."
+            npm install -g vercel
+          else
+            echo "Vercel CLI found in cache."
+          fi
+
+      - name: 🚀 Deploy to Vercel Preview
+        run: |
+          BRANCH="${{ github.event.inputs.branch }}"
+          echo "Deploying branch $BRANCH to Vercel preview."
+
+          if [ "$BRANCH" == "stg" ]; then
+            ENVIRONMENT="staging"
+          else
+            ENVIRONMENT="development"
+          fi
+
+          npx vercel --token ${{ secrets.VERCEL_PREVIEW_TOKEN }} \
+            --env NEXT_PUBLIC_ENV=$ENVIRONMENT \
+            --prod=false --confirm --branch $BRANCH
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
 
-      - name: Notify Success
-        run: echo "Deployment to Vercel preview environment for branch ${{ github.event.inputs.branch }} is complete."
+      - name: ✅ Notify Deployment Success
+        run: echo "Deployment to Vercel preview for branch ${{ github.event.inputs.branch }} completed successfully."
