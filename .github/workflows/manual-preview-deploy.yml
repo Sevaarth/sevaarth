@@ -20,9 +20,7 @@ jobs:
       - name: 🧑‍💼 Verify Admin Access
         id: check-permissions
         run: |
-          # Retrieve the admin username from secrets
           ADMIN_USERNAME="${{ secrets.ADMIN_USERNAME }}"
-          # Get the GitHub username of the person who triggered the workflow
           USERNAME="${{ github.actor }}"
 
           if [ "$USERNAME" == "$ADMIN_USERNAME" ]; then

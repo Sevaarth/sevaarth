@@ -33,7 +33,6 @@ jobs:
           ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
           USERNAME=${{ github.actor }}
 
-          # Check if the user is an admin
           if [ "$USERNAME" == "$ADMIN_USERNAME" ]; then
             echo "is-admin=true" >> $GITHUB_ENV
           else
