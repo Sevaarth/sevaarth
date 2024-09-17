@@ -13,10 +13,8 @@ on:
       - main
 
 jobs:
-  lint-and-test:
-    name: Lint and Run Tests
+  setup-environment:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [20.x]
@@ -34,23 +32,51 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+          key: node-modules-${{ matrix.node-version }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            node-modules-
+            node-modules-${{ matrix.node-version }}-
 
       - name: Install Dependencies
         run: npm ci
 
+  lint:
+    name: 🔍 Lint Code
+    needs: setup-environment
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Run Linting
         run: npm run lint
 
-      # - name: Run Unit Tests
-      #   run: npm run test
+  test:
+    name: 🧪 Run Test Cases
+    needs: setup-environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check for Test Files
+        id: check-tests
+        run: |
+          if ls src/tests/*.test.js 1> /dev/null 2>&1; then
+            echo "test-files-exist=true" >> $GITHUB_ENV
+          else
+            echo "No test files found."
+            echo "test-files-exist=false" >> $GITHUB_ENV
+            exit 0
+          fi
+
+      - name: Run Test Cases
+        if: env.test-files-exist == 'true'
+        run: |
+          npm run test
 
   build-app:
-    name: Build Application
+    name: 🛠️ Build Application
+    needs: [lint, test]
     runs-on: ubuntu-latest
-    needs: lint-and-test
 
     steps:
       - name: Checkout Code
@@ -74,8 +100,8 @@ jobs:
           path: .next
           include-hidden-files: true
 
-  deploy-preview-dev:
-    name: Deploy to Preview (dev branch)
+  deploy-preview-development:
+    name: 🚀 Deploy to Preview (dev branch)
     runs-on: ubuntu-latest
     needs: build-app
     if: github.ref == 'refs/heads/dev'
@@ -90,14 +116,14 @@ jobs:
           name: nextjs-build
           path: .next
 
-      - name: Deploy to Preview (dev)
+      - name: Deploy to Preview (development)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
         run: |
           npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=development --prod=false --confirm
 
-  deploy-preview-stg:
-    name: Deploy to Preview (stg branch)
+  deploy-preview-staging:
+    name: 🚀 Deploy to Preview (stg branch)
     runs-on: ubuntu-latest
     needs: build-app
     if: github.ref == 'refs/heads/stg'
@@ -112,14 +138,14 @@ jobs:
           name: nextjs-build
           path: .next
 
-      - name: Deploy to Preview (stg)
+      - name: Deploy to Preview (staging)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
         run: |
           npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=staging --prod=false --confirm
 
   deploy-production:
-    name: Deploy to Production (main branch)
+    name: 🚀 Deploy to Production (main branch)
     runs-on: ubuntu-latest
 
     needs: build-app
