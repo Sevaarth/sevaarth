@@ -76,28 +76,8 @@ jobs:
           restore-keys: |
             node-modules-
 
-      - name: Check for Test Files
-        id: check-test-files
-        run: |
-          TEST_FILES=$(find ./src -type f -name "*.test.js")
-          if [ -z "$TEST_FILES" ]; then
-            echo "No test files found. Skipping tests."
-            echo "has-tests=false" >> $GITHUB_ENV
-          else:
-            echo "Test files found. Proceeding with tests."
-            echo "has-tests=true" >> $GITHUB_ENV
-
-      - name: Run Tests
-        if: env.has-tests == 'true'
+      - name: Run Test Cases
         run: npm run test
-
-      # - name: Upload Test Results
-      #   if: env.has-tests == 'true'
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: test-results
-      #     path: ./test-results
-      #     if-no-files-found: ignore
 
   build-app:
     name: 🛠️ Build Application
