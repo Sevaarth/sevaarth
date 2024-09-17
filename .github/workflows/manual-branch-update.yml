@@ -19,76 +19,95 @@ on:
 
 jobs:
   check-permissions:
-    name: Check Permissions
+    name: 🛡️ Check Permissions
     runs-on: ubuntu-latest
     outputs:
       is-admin: ${{ steps.check-permissions.outputs.is-admin }}
     steps:
-      - name: Checkout Code
+      - name: 🔄 Checkout Code
         uses: actions/checkout@v4
 
-      - name: Check if user is admin
+      - name: 🔑 Verify Admin Permissions
         id: check-permissions
         run: |
-          # Retrieve the admin username from secrets
           ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
-          # Get the GitHub username of the person who triggered the workflow
           USERNAME=${{ github.actor }}
+
+          # Check if the user is an admin
           if [ "$USERNAME" == "$ADMIN_USERNAME" ]; then
             echo "is-admin=true" >> $GITHUB_ENV
           else
             echo "is-admin=false" >> $GITHUB_ENV
           fi
 
-      - name: Fail if not admin
+      - name: ❌ Fail if Not Admin
         if: ${{ env.is-admin == 'false' }}
         run: |
           echo "You must be an admin to trigger this workflow."
           exit 1
 
   create-pull-request:
-    name: Create Pull Request from ${{ inputs.from-branch }} to ${{ inputs.to-branch }}
+    name: 📦 Create Pull Request (From ${{ inputs.from-branch }} to ${{ inputs.to-branch }})
     runs-on: ubuntu-latest
     needs: check-permissions
 
     steps:
-      - name: Checkout Code
+      - name: 🔄 Checkout Code
         uses: actions/checkout@v4
 
-      - name: Create Pull Request
+      - name: 📝 Create Pull Request
         id: create_pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Merge ${{ inputs.from-branch }} into ${{ inputs.to-branch }}"
+          commit-message: "Merge ${{ inputs.from-branch }} into ${{ inputs.to-branch }}."
           branch: ${{ inputs.from-branch }}
           base: ${{ inputs.to-branch }}
           title: "Merge ${{ inputs.from-branch }} into ${{ inputs.to-branch }}"
           body: "This is an automated pull request created to merge ${{ inputs.from-branch }} into ${{ inputs.to-branch }}."
           draft: false
 
+      - name: ✅ Output PR Number
+        if: success()
+        run: echo "Pull Request Number=${{ steps.create_pr.outputs.pull_request_number }}"
+
   approve-pull-request:
-    name: Auto Approve Pull Request
+    name: ✅ Auto Approve Pull Request
     runs-on: ubuntu-latest
     needs: create-pull-request
 
     steps:
-      - name: Approve PR
+      - name: ✅ Approve PR
         uses: hmarr/auto-approve-action@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   merge-pull-request:
-    name: Merge the Pull Request
+    name: 🔀 Add Pull Request to Merge Queue
     runs-on: ubuntu-latest
     needs: approve-pull-request
 
     steps:
-      - name: Install GitHub CLI
-        run: sudo apt-get install gh
-
-      - name: Merge PR via GitHub CLI
+      - name: ⚙️ Ensure GitHub CLI is Installed
         run: |
-          gh pr merge ${{ needs.create-pull-request.outputs.pull_request_number }} --merge --repo ${{ github.repository }}
+          if ! command -v gh &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y gh || { echo "GitHub CLI install failed" && exit 1; }
+          else
+            echo "GitHub CLI already installed"
+          fi
+
+      - name: 🔀 Add PR to Merge Queue (Retry Logic)
+        run: |
+          RETRIES=3
+          PR_NUMBER=${{ needs.create-pull-request.outputs.pull_request_number }}
+
+          for i in $(seq 1 $RETRIES); do
+            gh pr merge $PR_NUMBER --queue --repo ${{ github.repository }} && break || {
+              echo "Merge attempt $i failed. Retrying..." && sleep 5;
+              if [ $i -eq $RETRIES ]; then
+                echo "Failed to add PR to merge queue after $RETRIES attempts." && exit 1;
+              fi
+            }
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
