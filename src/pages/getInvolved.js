@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
+import { toast, Toaster } from "react-hot-toast";
+import logo from "/public/images/logoSevaarth.png";
+import config from "@/lib/config";
 
 export default function GetInvolved() {
   const [formData, setFormData] = useState({
@@ -7,6 +9,7 @@ export default function GetInvolved() {
     email: "",
     donationPurpose: "",
     donationAmount: "",
+    phone: "",
     comment: "",
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -26,32 +29,125 @@ export default function GetInvolved() {
     });
   };
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate a donation API call
-    setTimeout(() => {
+    const razorpayLoaded = await loadRazorpayScript();
+
+    if (!razorpayLoaded) {
+      toast.error("Failed to load payment gateway. Please try again.");
       setIsLoading(false);
+      return;
+    }
 
-      // Show success message using react-hot-toast
-      toast.success("Thank you for your donation!");
+    const response = await fetch("/api/donation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-      // Clear form fields after successful submission
-      setFormData({
-        name: "",
-        email: "",
-        donationPurpose: "",
-        donationAmount: "",
-        comment: "",
-      });
-    }, 2000);
+    const data = await response.json();
+
+    if (!response.ok) {
+      toast.error("Failed to create donation. Please try again.");
+      setIsLoading(false);
+      return;
+    }
+
+    const { order_id, amount, currency } = data;
+
+    const options = {
+      key: config.public_key,
+      amount: amount.toString(),
+      currency: currency,
+      name: "Sevaarth",
+      description: "Donation",
+      image: logo.src,
+      order_id: order_id,
+      handler: async function (response) {
+        const verificationResponse = await fetch("/api/payment-verification", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+          }),
+        });
+
+        if (verificationResponse.ok) {
+          toast.success(
+            "Payment successful! A receipt has been sent to your email.",
+          );
+        } else {
+          toast.error("Payment verification failed.");
+        }
+
+        // Clear form after payment (success or failure)
+        resetFormData();
+      },
+      prefill: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+      },
+      theme: {
+        color: "#3399cc",
+      },
+      modal: {
+        ondismiss: function () {
+          toast.error("Payment was cancelled.");
+          // Clear form if the payment gateway is closed
+          resetFormData();
+        },
+      },
+      method: {
+        netbanking: true,
+        card: true,
+        wallet: false,
+        upi: true,
+        upi_intent: true,
+        upi_qr: true,
+        paylater: false,
+      },
+    };
+
+    const razorpayGateway = new window.Razorpay(options);
+    razorpayGateway.open();
+
+    setIsLoading(false);
+  };
+
+  const resetFormData = () => {
+    // Reset form data after payment completion or cancellation
+    setFormData({
+      name: "",
+      email: "",
+      donationPurpose: "",
+      donationAmount: "",
+      phone: "",
+      comment: "",
+    });
   };
 
   return (
     <main className="bg-beige min-h-screen py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* React Hot Toast Toaster Component */}
         <Toaster position="top-center" reverseOrder={false} />
 
         <h1 className="text-5xl font-bold text-primary text-center">Donate</h1>
@@ -69,7 +165,6 @@ export default function GetInvolved() {
               Make a Donation
             </h2>
 
-            {/* Full Name Field */}
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -89,7 +184,6 @@ export default function GetInvolved() {
               />
             </div>
 
-            {/* Email Field */}
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -109,7 +203,25 @@ export default function GetInvolved() {
               />
             </div>
 
-            {/* Donation Purpose Field */}
+            <div className="mb-4">
+              <label
+                htmlFor="phone"
+                className="block text-brown text-sm font-medium mb-1"
+              >
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                className="w-full border border-gray-300 rounded-lg py-2 px-4"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                aria-required="true"
+              />
+            </div>
+
             <div className="mb-4">
               <label
                 htmlFor="donationPurpose"
@@ -129,7 +241,6 @@ export default function GetInvolved() {
               />
             </div>
 
-            {/* Donation Amount Field */}
             <div className="mb-4">
               <label
                 htmlFor="donationAmount"
@@ -138,7 +249,7 @@ export default function GetInvolved() {
                 Donation Amount (₹)
               </label>
               <input
-                type="number"
+                type="amount"
                 id="donationAmount"
                 name="donationAmount"
                 className="w-full border border-gray-300 rounded-lg py-2 px-4"
@@ -150,7 +261,6 @@ export default function GetInvolved() {
               />
             </div>
 
-            {/* Preset Donation Amounts */}
             <div className="mb-4">
               <p className="text-brown text-sm font-medium mb-1">
                 Or select a preset amount:
@@ -169,7 +279,6 @@ export default function GetInvolved() {
               </div>
             </div>
 
-            {/* Optional Comment Field */}
             <div className="mb-4">
               <label
                 htmlFor="comment"
@@ -180,18 +289,17 @@ export default function GetInvolved() {
               <textarea
                 id="comment"
                 name="comment"
-                rows="4"
                 className="w-full border border-gray-300 rounded-lg py-2 px-4"
                 value={formData.comment}
                 onChange={handleChange}
-              ></textarea>
+                aria-required="false"
+              />
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
-              className={`bg-[#00539b] text-white py-3 px-6 rounded-lg shadow-lg  transition-all duration-200 ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              className={`bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-primary-dark w-full ${
+                isLoading ? "opacity-50" : ""
               }`}
               disabled={isLoading}
             >
