@@ -1,6 +1,7 @@
 import Image from "next/image";
 import logo from "/public/images/logoSevaarth.png";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+import config from "@/lib/config";
 
 const Footer = () => {
   const footerLinks = [
@@ -32,13 +33,27 @@ const Footer = () => {
           </p>
           {/* Social media icons */}
           <div className="flex mt-4 justify-center md:justify-start space-x-3 text-primary">
-            <a href="#" aria-label="Facebook">
+            <a
+              href={config.socialLinks.facebook}
+              target="_blank"
+              aria-label="Facebook"
+            >
               <FaFacebookF />
             </a>
-            <a href="#" className="ml-3" aria-label="Instagram">
+            <a
+              href={config.socialLinks.instagram}
+              target="_blank"
+              className="ml-3"
+              aria-label="Instagram"
+            >
               <FaInstagram />
             </a>
-            <a href="#" className="ml-3" aria-label="Twitter">
+            <a
+              href={config.socialLinks.twitter}
+              target="_blank"
+              className="ml-3"
+              aria-label="Twitter"
+            >
               <FaTwitter />
             </a>
           </div>
@@ -90,10 +105,10 @@ const Footer = () => {
       <div className="border-t-2 border-gray-400 py-4">
         <div className="container mx-auto text-center">
           <p className="text-gray-300 text-lg font-semibold">
-            © 2024 Sevaarth. All Rights Reserved.
+            © 2024 {config.appName}. All Rights Reserved.
           </p>
           <p className="text-gray-300 text-sm">
-            Contact us: info@sevaarth.org | +123 456 7890
+            Contact us: {config.contact.email} | {config.contact.phone}{" "}
           </p>
         </div>
       </div>

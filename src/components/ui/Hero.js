@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 import logo from "/public/images/logoSevaarth.png"; // Import the fallback image
 
 const Hero = () => {
@@ -32,7 +33,7 @@ const Hero = () => {
         <div className="lg:w-1/2 flex lg:justify-end relative">
           {/* Large Circular Image with Overlay */}
           <div className="relative w-64 h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-500 ease-in-out">
-            <img
+            <Image
               src={
                 mainImageError
                   ? logo
@@ -40,6 +41,9 @@ const Hero = () => {
               }
               alt="Child image"
               className="object-cover w-full h-full"
+              width={800}
+              height={600}
+              layout="responsive"
               onError={() => setMainImageError(true)}
             />
             <div className="absolute inset-0 bg-black bg-opacity-20 hover:bg-opacity-10 transition duration-500 ease-in-out"></div>
@@ -47,7 +51,7 @@ const Hero = () => {
 
           {/* Smaller Circular Image */}
           <div className="absolute border-8 border-white left-[35%] w-36 h-36 rounded-full overflow-hidden shadow-xl transform hover:scale-110 transition-all duration-500 ease-in-out">
-            <img
+            <Image
               src={
                 smallImageError
                   ? logo
@@ -55,6 +59,9 @@ const Hero = () => {
               }
               alt="Another child image"
               className="object-cover w-full h-full"
+              width={800}
+              height={600}
+              layout="responsive"
               onError={() => setSmallImageError(true)}
             />
             <div className="absolute inset-0 bg-black bg-opacity-20 hover:bg-opacity-10 transition duration-500 ease-in-out"></div>
@@ -67,7 +74,7 @@ const Hero = () => {
         {/* Campaign Card */}
         <div className="bg-white p-8 shadow-lg rounded-lg flex items-start max-w-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out transform hover:-translate-y-2">
           <div className="mr-6 w-32 h-32 overflow-hidden rounded-md">
-            <img
+            <Image
               src={
                 campaignImageError
                   ? logo
@@ -75,6 +82,9 @@ const Hero = () => {
               }
               alt="Campaign"
               className="object-cover w-full h-full hover:scale-105 transition-transform duration-500 ease-in-out"
+              width={800}
+              height={600}
+              layout="responsive"
               onError={() => setCampaignImageError(true)}
             />
           </div>
@@ -103,7 +113,7 @@ const Hero = () => {
             </p>
           </div>
           <div className="flex -space-x-3 ml-6">
-            <img
+            <Image
               className="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
               src={
                 volunteersImageError
@@ -111,9 +121,12 @@ const Hero = () => {
                   : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
               }
               alt="Volunteer"
+              width={800}
+              height={600}
+              layout="responsive"
               onError={() => setVolunteersImageError(true)}
             />
-            <img
+            <Image
               className="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
               src={
                 volunteersImageError
@@ -121,9 +134,12 @@ const Hero = () => {
                   : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
               }
               alt="Volunteer"
+              width={800}
+              height={600}
+              layout="responsive"
               onError={() => setVolunteersImageError(true)}
             />
-            <img
+            <Image
               className="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
               src={
                 volunteersImageError
@@ -131,9 +147,12 @@ const Hero = () => {
                   : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
               }
               alt="Volunteer"
+              width={800}
+              height={600}
+              layout="responsive"
               onError={() => setVolunteersImageError(true)}
             />
-            <img
+            <Image
               className="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
               src={
                 volunteersImageError
@@ -141,6 +160,9 @@ const Hero = () => {
                   : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
               }
               alt="Volunteer"
+              width={800}
+              height={600}
+              layout="responsive"
               onError={() => setVolunteersImageError(true)}
             />
           </div>
