@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - dev
-    types: [opened]
   push:
     branches:
       - dev
@@ -14,7 +13,6 @@ on:
 jobs:
   setup-environment:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     strategy:
       matrix:
         node-version: [20.x]
@@ -40,10 +38,9 @@ jobs:
         run: npm ci
 
   lint:
-    name: 🔍 Lint Code
+    name: 🔍 Lint Codebase
     runs-on: ubuntu-latest
     needs: setup-environment
-    if: github.event_name == 'pull_request'
 
     steps:
       - name: Checkout Code
@@ -63,8 +60,7 @@ jobs:
   test:
     name: 🧪 Run Test Cases
     runs-on: ubuntu-latest
-    needs: setup-environment
-    if: github.event_name == 'pull_request'
+    needs: lint
 
     steps:
       - name: Checkout Code
@@ -81,11 +77,10 @@ jobs:
       - name: Run Test Cases
         run: npm run test
 
-  build-app:
+  build:
     name: 🛠️ Build Application
     runs-on: ubuntu-latest
-    needs: [lint, test]
-    if: github.event_name == 'pull_request'
+    needs: test
 
     steps:
       - name: Checkout Code
@@ -109,11 +104,11 @@ jobs:
           path: .next
           include-hidden-files: true
 
-  deploy-preview-development:
-    name: 🚀 Deploy to Preview (dev branch)
+  deploy-to-development:
+    name: 🚀 Deploy to Development (dev branch)
     runs-on: ubuntu-latest
-    needs: build-app
-    if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
+    needs: build
+    if: github.ref == 'refs/heads/dev'
 
     steps:
       - name: Checkout Code
@@ -125,7 +120,7 @@ jobs:
           name: nextjs-build
           path: .next
 
-      - name: Deploy to Preview (development)
+      - name: Deploy to Development
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
@@ -133,11 +128,11 @@ jobs:
         run: |
           npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=development --prod=false --confirm --project $PROJECT_ID --org $ORG_ID
 
-  deploy-preview-staging:
+  deploy-to-preview:
     name: 🚀 Deploy to Preview (stg branch)
     runs-on: ubuntu-latest
-    needs: build-app
-    if: github.ref == 'refs/heads/stg' && github.event_name == 'push'
+    needs: build
+    if: github.ref == 'refs/heads/stg'
 
     steps:
       - name: Checkout Code
@@ -149,7 +144,7 @@ jobs:
           name: nextjs-build
           path: .next
 
-      - name: Deploy to Preview (staging)
+      - name: Deploy to Preview
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
@@ -157,11 +152,11 @@ jobs:
         run: |
           npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=staging --prod=false --confirm --project $PROJECT_ID --org $ORG_ID
 
-  deploy-production:
+  deploy-to-production:
     name: 🚀 Deploy to Production (main branch)
     runs-on: ubuntu-latest
-    needs: build-app
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout Code
