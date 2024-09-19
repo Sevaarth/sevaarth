@@ -12,6 +12,7 @@ on:
 
 jobs:
   setup-environment:
+    name: setup-environment (20.x)
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -122,9 +123,9 @@ jobs:
 
       - name: Deploy to Development
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_DEVELOPMENT_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=development --prod=false --confirm
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=development --prod=false --yes
 
   deploy-to-Preview:
     name: 🚀 Deploy to Preview (stg branch)
@@ -146,7 +147,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=staging --prod=false --confirm
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=staging --prod=false --yes
 
   deploy-to-production:
     name: 🚀 Deploy to Production (main branch)
@@ -169,4 +170,4 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PROD_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=production --prod=true --confirm
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=production --prod=true --yes
