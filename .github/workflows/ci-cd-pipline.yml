@@ -125,7 +125,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_DEVELOPMENT_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=development --prod=false --yes
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=development --yes
 
   deploy-to-Preview:
     name: 🚀 Deploy to Preview (stg branch)
@@ -147,7 +147,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=staging --prod=false --yes
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=staging --yes
 
   deploy-to-production:
     name: 🚀 Deploy to Production (main branch)
