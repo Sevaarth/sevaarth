@@ -1,6 +1,23 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_ENV": "@env:NEXT_PUBLIC_ENV"
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
   "github": {
-    "enabled": false
+    "enabled": false,
+    "silent": true,
+    "autoJobCancelation": false
   }
 }
