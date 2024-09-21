@@ -12,6 +12,7 @@ on:
 
 jobs:
   setup-environment:
+    name: setup-environment (20.x)
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -38,7 +39,7 @@ jobs:
         run: npm ci
 
   lint:
-    name: 🔍 Lint Code
+    name: 🔍 Lint Codebase
     runs-on: ubuntu-latest
     needs: setup-environment
 
@@ -60,7 +61,7 @@ jobs:
   test:
     name: 🧪 Run Test Cases
     runs-on: ubuntu-latest
-    needs: setup-environment
+    needs: lint
 
     steps:
       - name: Checkout Code
@@ -77,10 +78,10 @@ jobs:
       - name: Run Test Cases
         run: npm run test
 
-  build-app:
+  build:
     name: 🛠️ Build Application
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: test
 
     steps:
       - name: Checkout Code
@@ -104,10 +105,10 @@ jobs:
           path: .next
           include-hidden-files: true
 
-  deploy-preview-development:
-    name: 🚀 Deploy to Preview (dev branch)
+  deploy-to-development:
+    name: 🚀 Deploy to Development (dev branch)
     runs-on: ubuntu-latest
-    needs: build-app
+    needs: build
     if: github.ref == 'refs/heads/dev'
 
     steps:
@@ -120,16 +121,16 @@ jobs:
           name: nextjs-build
           path: .next
 
-      - name: Deploy to Preview (development)
+      - name: Deploy to Development
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_DEVELOPMENT_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=development --prod=false --confirm
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=development --yes
 
-  deploy-preview-staging:
+  deploy-to-Preview:
     name: 🚀 Deploy to Preview (stg branch)
     runs-on: ubuntu-latest
-    needs: build-app
+    needs: build
     if: github.ref == 'refs/heads/stg'
 
     steps:
@@ -146,13 +147,13 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PREVIEW_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=staging --prod=false --confirm
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=staging --yes
 
-  deploy-production:
+  deploy-to-production:
     name: 🚀 Deploy to Production (main branch)
     runs-on: ubuntu-latest
 
-    needs: build-app
+    needs: build
     if: github.ref == 'refs/heads/main'
 
     steps:
@@ -169,4 +170,4 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_PROD_TOKEN }}
         run: |
-          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=production --prod=true --confirm
+          npx vercel --token $VERCEL_TOKEN --env NEXT_PUBLIC_ENV=production --prod=true --yes
