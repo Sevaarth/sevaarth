@@ -1,5 +1,6 @@
 import { useState } from "react";
 import logo from "/public/images/logoSevaarth.png"; // Fallback image
+import Image from "next/image";
 
 const Hero = () => {
   // State for handling image load errors
@@ -29,7 +30,7 @@ const Hero = () => {
         <div className="lg:w-1/2 flex lg:justify-end relative">
           {/* Large Circular Image */}
           <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden">
-            <img
+            <Image
               src={
                 mainImageError
                   ? logo
@@ -44,7 +45,7 @@ const Hero = () => {
 
           {/* Smaller Circular Image */}
           <div className="absolute border-8 border-white -top-10 left-[15%] w-36 h-36 md:w-42 md:h-42 rounded-full overflow-hidden">
-            <img
+            <Image
               src={
                 smallImageError
                   ? logo
@@ -63,7 +64,7 @@ const Hero = () => {
         {/* Campaign Card */}
         <div className="bg-white p-6 lg:p-8 shadow-lg rounded-lg flex items-start max-w-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out transform hover:-translate-y-2">
           <div className="mr-6 w-28 lg:w-32 h-28 lg:h-32 overflow-hidden rounded-md">
-            <img
+            <Image
               src={
                 campaignImageError
                   ? logo
@@ -97,7 +98,7 @@ const Hero = () => {
           </div>
           <div className="flex -space-x-3 ml-6">
             {[...Array(4)].map((_, i) => (
-              <img
+              <Image
                 key={i}
                 className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
                 src={
