@@ -82,7 +82,6 @@ const Hero = () => {
               Make an impact, one piece of clothing at a time, for those in
               need.
             </p>
-            
           </div>
         </div>
 
@@ -115,6 +114,7 @@ const Hero = () => {
       </div>
     </div>
   );
-};ss
+};
+ss;
 
 export default Hero;
