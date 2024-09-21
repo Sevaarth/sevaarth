@@ -1,5 +1,3 @@
-name: Deploy to other Environment
-
 on:
   workflow_dispatch:
     inputs:
@@ -81,7 +79,7 @@ jobs:
         uses: hmarr/auto-approve-action@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-number: ${{ needs.create-pull-request.outputs.pull_request_number }}
+          pull-request-number: ${{ steps.create_pr.outputs.pull_request_number }}
 
   merge-pull-request:
     name: 🔀 Merge Pull Request
@@ -89,28 +87,16 @@ jobs:
     needs: approve-pull-request
 
     steps:
-      - name: 🛠 Install GitHub CLI (Using Cache)
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
-
       - name: Install GitHub CLI
-        id: install-gh
         run: |
           if ! command -v gh &> /dev/null; then
-            echo "Installing GitHub CLI..."
             sudo apt-get update
             sudo apt-get install gh -y
-          else
-            echo "GitHub CLI is already installed."
+          fi
 
       - name: 🔀 Merge PR Directly
         run: |
-          PR_NUMBER=${{ needs.create-pull-request.outputs.pull_request_number }}
-
-          echo "Merging PR #$PR_NUMBER"
-          gh pr merge $PR_NUMBER --merge --repo ${{ github.repository }} --force || {
-            echo "Failed to merge PR." && exit 1;
-          }
+          PR_NUMBER=${{ steps.create_pr.outputs.pull_request_number }}
+          gh pr merge $PR_NUMBER --merge --repo ${{ github.repository }} --force || exit 1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
