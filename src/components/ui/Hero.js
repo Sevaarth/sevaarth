@@ -1,8 +1,9 @@
+import Image from "next/image";
 import { useState } from "react";
 import logo from "/public/images/logoSevaarth.png"; // Fallback image
-import Image from "next/image";
-
-const Hero = () => { 
+import Child_image from "/public/images/Child image.jpg";
+import Another_Child_image from "/public/images/Another child image.jpg";
+const Hero = () => {
   // State for handling image load errors
   const [mainImageError, setMainImageError] = useState(false);
   const [smallImageError, setSmallImageError] = useState(false);
@@ -31,12 +32,10 @@ const Hero = () => {
           {/* Large Circular Image */}
           <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden">
             <Image
-              src={
-                mainImageError
-                  ? logo
-                  : "https://charius-next.netlify.app/_ipx/w_750,q_75/%2F_next%2Fstatic%2Fmedia%2F1.368f2f55.jpg?url=%2F_next%2Fstatic%2Fmedia%2F1.368f2f55.jpg&w=750&q=75"
-              }
+              src={mainImageError ? logo : Child_image}
               alt="Child image"
+              width={750}
+              height={750}
               className="object-cover w-full h-full"
               onError={() => setMainImageError(true)}
             />
@@ -44,14 +43,12 @@ const Hero = () => {
           </div>
 
           {/* Smaller Circular Image */}
-          <div className="absolute border-8 border-white -top-10 left-[15%] w-36 h-36 md:w-42 md:h-42 rounded-full overflow-hidden">
+          <div className="absolute border-8 border-white -top-10 left-[15%] md:left-[30%] w-36 h-36 md:w-48 md:h-48 rounded-full overflow-hidden">
             <Image
-              src={
-                smallImageError
-                  ? logo
-                  : "https://charius-next.netlify.app/_ipx/w_640,q_75/%2F_next%2Fstatic%2Fmedia%2F2.a97ffdb7.jpg?url=%2F_next%2Fstatic%2Fmedia%2F2.a97ffdb7.jpg&w=640&q=75"
-              }
+              src={smallImageError ? logo : Another_Child_image}
               alt="Another child image"
+              width={640}
+              height={640}
               className="object-cover w-full h-full"
               onError={() => setSmallImageError(true)}
             />
@@ -71,6 +68,8 @@ const Hero = () => {
                   : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
               }
               alt="Campaign"
+              width={500}
+              height={500}
               className="object-cover w-full h-full hover:scale-105 transition-transform duration-500 ease-in-out"
               onError={() => setCampaignImageError(true)}
             />
@@ -107,6 +106,8 @@ const Hero = () => {
                     : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
                 }
                 alt="Volunteer"
+                width={100}
+                height={100}
                 onError={() => setVolunteersImageError(true)}
               />
             ))}
@@ -116,6 +117,5 @@ const Hero = () => {
     </div>
   );
 };
-ss;
 
 export default Hero;
