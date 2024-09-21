@@ -14,7 +14,11 @@ const OurWork = () => {
         {/* Card 1 */}
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <Image
-            src={elderlySupport ? logo : "https://24ai.tech/en/wp-content/uploads/sites/3/2023/10/01_product_1_sdelat-izobrazhenie-1-1-7-scaled.jpg"}
+            src={
+              elderlySupport
+                ? logo
+                : "https://24ai.tech/en/wp-content/uploads/sites/3/2023/10/01_product_1_sdelat-izobrazhenie-1-1-7-scaled.jpg"
+            }
             alt="Elderly Support"
             width={400}
             height={250}
@@ -32,7 +36,11 @@ const OurWork = () => {
         {/* Card 2 */}
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <Image
-            src={childEducation ? logo : "https://24ai.tech/en/wp-content/uploads/sites/3/2023/10/01_product_1_sdelat-izobrazhenie-1-1-7-scaled.jpg"}
+            src={
+              childEducation
+                ? logo
+                : "https://24ai.tech/en/wp-content/uploads/sites/3/2023/10/01_product_1_sdelat-izobrazhenie-1-1-7-scaled.jpg"
+            }
             alt="Child Education"
             width={400}
             height={250}
@@ -51,7 +59,11 @@ const OurWork = () => {
         {/* Card 3 */}
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <Image
-            src={womenEmpowerment ? logo : "https://24ai.tech/en/wp-content/uploads/sites/3/2023/10/01_product_1_sdelat-izobrazhenie-1-1-7-scaled.jpg"}
+            src={
+              womenEmpowerment
+                ? logo
+                : "https://24ai.tech/en/wp-content/uploads/sites/3/2023/10/01_product_1_sdelat-izobrazhenie-1-1-7-scaled.jpg"
+            }
             alt="Women Empowerment"
             width={400}
             height={250}
@@ -70,7 +82,11 @@ const OurWork = () => {
         {/* Card 4 */}
         <div className="p-6 bg-white shadow-lg rounded-lg">
           <Image
-            src={environmentInitiatives ? logo : "https://24ai.tech/en/wp-content/uploads/sites/3/2023/10/01_product_1_sdelat-izobrazhenie-1-1-7-scaled.jpg"}
+            src={
+              environmentInitiatives
+                ? logo
+                : "https://24ai.tech/en/wp-content/uploads/sites/3/2023/10/01_product_1_sdelat-izobrazhenie-1-1-7-scaled.jpg"
+            }
             alt="Environment Initiatives"
             width={400}
             height={250}
