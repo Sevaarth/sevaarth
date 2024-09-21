@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "enlightio.com",
       },
+      {
+        protocol: "https",
+        hostname: "24ai.tech",
+      },
     ],
   },
 };
