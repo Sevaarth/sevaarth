@@ -19,6 +19,7 @@ export default [
       "react/react-in-jsx-scope": "off", // Next.js doesn't require React to be in scope
       "no-console": "warn", // Warn instead of error for console logs
       "react/prop-types": "off", // Disable prop-types rule if you're using TypeScript
+      "@next/next/no-img-element": "error", // Enforce using next/image instead of img tag
     },
     settings: {
       react: {

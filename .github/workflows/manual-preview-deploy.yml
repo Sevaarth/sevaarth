@@ -27,6 +27,7 @@ jobs:
             echo "is-admin=true" >> $GITHUB_ENV
           else
             echo "is-admin=false" >> $GITHUB_ENV
+          fi
         continue-on-error: false
 
       - name: ❌ Fail if Not Admin

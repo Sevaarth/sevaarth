@@ -1,7 +1,8 @@
-import { useState } from "react";
 import Image from "next/image";
-import logo from "/public/images/logoSevaarth.png"; // Import the fallback image
-
+import { useState } from "react";
+import logo from "/public/images/logoSevaarth.png"; // Fallback image
+import Child_image from "/public/images/Child image.jpg";
+import Another_Child_image from "/public/images/Another child image.jpg";
 const Hero = () => {
   // State for handling image load errors
   const [mainImageError, setMainImageError] = useState(false);
@@ -10,70 +11,56 @@ const Hero = () => {
   const [volunteersImageError, setVolunteersImageError] = useState(false);
 
   return (
-    <div className="bg-[#00041b] py-20 px-10">
+    <div className="py-16 px-6 lg:px-10">
       <div className="container mx-auto flex flex-col lg:flex-row items-center space-y-12 lg:space-y-0 lg:space-x-12">
         {/* Left Side: Text */}
         <div className="lg:w-1/2 text-center lg:text-left">
           <p className="text-[#0B8494] text-2xl font-semibold mb-4 animate-pulse">
             Give them a chance.
           </p>
-          <h1 className="text-[#125B9A] font-extrabold text-6xl leading-snug mb-6 tracking-tight">
+          <h1 className="text-[#125B9A] font-bold text-4xl md:text-5xl leading-snug mb-6 tracking-tight">
             Believe in The Better Future of Others.
           </h1>
           <p className="text-[#507687] text-lg leading-relaxed mb-8">
             Lorem ipsum dolor sit amet consectetur. Quisque quisque cursus
             tellus dui gravida. Sed at a massa nunc at.
           </p>
-          <button className="bg-[#0B8494] text-white py-3 px-8 rounded-full font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-105 hover:bg-[#096d7a]">
-            Get Involved
-          </button>
         </div>
 
         {/* Right Side: Image Collage */}
         <div className="lg:w-1/2 flex lg:justify-end relative">
-          {/* Large Circular Image with Overlay */}
-          <div className="relative w-64 h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-500 ease-in-out">
+          {/* Large Circular Image */}
+          <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden">
             <Image
-              src={
-                mainImageError
-                  ? logo
-                  : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
-              }
+              src={mainImageError ? logo : Child_image}
               alt="Child image"
+              width={750}
+              height={750}
               className="object-cover w-full h-full"
-              width={800}
-              height={600}
-              layout="responsive"
               onError={() => setMainImageError(true)}
             />
             <div className="absolute inset-0 bg-black bg-opacity-20 hover:bg-opacity-10 transition duration-500 ease-in-out"></div>
           </div>
 
           {/* Smaller Circular Image */}
-          <div className="absolute border-8 border-white left-[35%] w-36 h-36 rounded-full overflow-hidden shadow-xl transform hover:scale-110 transition-all duration-500 ease-in-out">
+          <div className="absolute border-8 border-white -top-10 left-[15%] md:left-[30%] w-36 h-36 md:w-48 md:h-48 rounded-full overflow-hidden">
             <Image
-              src={
-                smallImageError
-                  ? logo
-                  : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
-              }
+              src={smallImageError ? logo : Another_Child_image}
               alt="Another child image"
+              width={640}
+              height={640}
               className="object-cover w-full h-full"
-              width={800}
-              height={600}
-              layout="responsive"
               onError={() => setSmallImageError(true)}
             />
-            <div className="absolute inset-0 bg-black bg-opacity-20 hover:bg-opacity-10 transition duration-500 ease-in-out"></div>
           </div>
         </div>
       </div>
 
       {/* Lower Section: Campaign and Volunteers */}
-      <div className="container mx-auto flex flex-col lg:flex-row justify-between mt-20 space-y-8 lg:space-y-0 lg:space-x-8">
+      <div className="container mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 -mt-20 space-y-8 lg:space-y-0 lg:space-x-8">
         {/* Campaign Card */}
-        <div className="bg-white p-8 shadow-lg rounded-lg flex items-start max-w-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out transform hover:-translate-y-2">
-          <div className="mr-6 w-32 h-32 overflow-hidden rounded-md">
+        <div className="bg-white p-6 lg:p-8 shadow-lg rounded-lg flex items-start max-w-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out transform hover:-translate-y-2">
+          <div className="mr-6 w-28 lg:w-32 h-28 lg:h-32 overflow-hidden rounded-md">
             <Image
               src={
                 campaignImageError
@@ -81,10 +68,9 @@ const Hero = () => {
                   : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
               }
               alt="Campaign"
+              width={500}
+              height={500}
               className="object-cover w-full h-full hover:scale-105 transition-transform duration-500 ease-in-out"
-              width={800}
-              height={600}
-              layout="responsive"
               onError={() => setCampaignImageError(true)}
             />
           </div>
@@ -96,75 +82,35 @@ const Hero = () => {
               Make an impact, one piece of clothing at a time, for those in
               need.
             </p>
-            <button className="bg-[#0B8494] text-white py-3 px-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105 hover:bg-[#096d7a]">
-              <span className="mr-2">▶</span> Watch Video
-            </button>
           </div>
         </div>
 
         {/* Volunteer Stats */}
-        <div className="bg-white p-8 shadow-lg rounded-lg flex items-center max-w-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out transform hover:-translate-y-2">
+        <div className="bg-white p-6 lg:p-8 shadow-lg rounded-lg flex items-center max-w-sm hover:shadow-2xl -translate-y-24">
           <div className="flex flex-col items-center">
-            <div className="bg-[#0B8494] text-white text-4xl font-bold rounded-full w-28 h-28 flex items-center justify-center shadow-lg">
+            <div className="bg-[#0B8494] text-white text-3xl lg:text-4xl font-bold rounded-full w-24 h-24 lg:w-28 lg:h-28 flex items-center justify-center shadow-lg">
               120+
             </div>
-            <p className="text-[#125B9A] mt-3 text-center text-xl font-semibold">
+            <p className="text-[#125B9A] mt-3 text-center text-lg lg:text-xl font-semibold">
               Happy Volunteers
             </p>
           </div>
           <div className="flex -space-x-3 ml-6">
-            <Image
-              className="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
-              src={
-                volunteersImageError
-                  ? logo
-                  : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
-              }
-              alt="Volunteer"
-              width={800}
-              height={600}
-              layout="responsive"
-              onError={() => setVolunteersImageError(true)}
-            />
-            <Image
-              className="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
-              src={
-                volunteersImageError
-                  ? logo
-                  : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
-              }
-              alt="Volunteer"
-              width={800}
-              height={600}
-              layout="responsive"
-              onError={() => setVolunteersImageError(true)}
-            />
-            <Image
-              className="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
-              src={
-                volunteersImageError
-                  ? logo
-                  : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
-              }
-              alt="Volunteer"
-              width={800}
-              height={600}
-              layout="responsive"
-              onError={() => setVolunteersImageError(true)}
-            />
-            <Image
-              className="w-12 h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
-              src={
-                volunteersImageError
-                  ? logo
-                  : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
-              }
-              alt="Volunteer"
-              width={800}
-              height={600}
-              layout="responsive"
-              onError={() => setVolunteersImageError(true)}
-            />
+            {[...Array(4)].map((_, i) => (
+              <Image
+                key={i}
+                className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
+                src={
+                  volunteersImageError
+                    ? logo
+                    : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
+                }
+                alt="Volunteer"
+                width={100}
+                height={100}
+                onError={() => setVolunteersImageError(true)}
+              />
+            ))}
           </div>
         </div>
       </div>
