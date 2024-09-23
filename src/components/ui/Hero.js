@@ -1,14 +1,99 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "/public/images/logoSevaarth.png"; // Fallback image
 import Child_image from "/public/images/Child image.jpg";
 import Another_Child_image from "/public/images/Another child image.jpg";
+
 const Hero = () => {
   // State for handling image load errors
   const [mainImageError, setMainImageError] = useState(false);
   const [smallImageError, setSmallImageError] = useState(false);
   const [campaignImageError, setCampaignImageError] = useState(false);
   const [volunteersImageError, setVolunteersImageError] = useState(false);
+
+  // State for volunteer count and counting animation
+  const [volunteerCount, setVolunteerCount] = useState(null);
+  const [displayVolunteerCount, setDisplayVolunteerCount] = useState(0);
+  const [countingVolunteers, setCountingVolunteers] = useState(false);
+
+  // State for donation count and counting animation
+  const [donationCount, setDonationCount] = useState(null);
+  const [displayDonationCount, setDisplayDonationCount] = useState(0);
+  const [countingDonations, setCountingDonations] = useState(false);
+
+  // Fetch the volunteer count from the API
+  useEffect(() => {
+    const fetchVolunteerCount = async () => {
+      try {
+        const response = await fetch("/api/volunteers");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setVolunteerCount(data.totalApprovedVolunteers);
+        setCountingVolunteers(true);
+      } catch (error) {
+        console.error("Failed to fetch volunteer count:", error);
+      }
+    };
+
+    fetchVolunteerCount();
+  }, []);
+
+  // Simulate counting up to the actual volunteer count
+  useEffect(() => {
+    if (countingVolunteers && volunteerCount !== null) {
+      const interval = setInterval(() => {
+        setDisplayVolunteerCount((prevCount) => {
+          if (prevCount < volunteerCount) {
+            return prevCount + 1;
+          } else {
+            clearInterval(interval);
+            return volunteerCount; // Ensure it ends at the exact count
+          }
+        });
+      }, 30); // Adjust speed here (milliseconds)
+
+      return () => clearInterval(interval); // Cleanup interval on unmount
+    }
+  }, [countingVolunteers, volunteerCount]);
+
+  // Fetch the donation count from the API
+  useEffect(() => {
+    const fetchDonationCount = async () => {
+      try {
+        const response = await fetch("/api/totalDonations");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setDonationCount(data.totalAmount);
+        setCountingDonations(true);
+      } catch (error) {
+        console.error("Failed to fetch donation count:", error);
+      }
+    };
+
+    fetchDonationCount();
+  }, []);
+
+  // Simulate counting up to the actual donation count
+  useEffect(() => {
+    if (countingDonations && donationCount !== null) {
+      const interval = setInterval(() => {
+        setDisplayDonationCount((prevCount) => {
+          if (prevCount < donationCount) {
+            return prevCount + 1;
+          } else {
+            clearInterval(interval);
+            return donationCount; // Ensure it ends at the exact count
+          }
+        });
+      }, 30); // Adjust speed here (milliseconds)
+
+      return () => clearInterval(interval); // Cleanup interval on unmount
+    }
+  }, [countingDonations, donationCount]);
 
   return (
     <div className="py-16 px-6 lg:px-10">
@@ -89,10 +174,39 @@ const Hero = () => {
         <div className="bg-white p-6 lg:p-8 shadow-lg rounded-lg flex items-center max-w-sm hover:shadow-2xl -translate-y-24">
           <div className="flex flex-col items-center">
             <div className="bg-[#0B8494] text-white text-3xl lg:text-4xl font-bold rounded-full w-24 h-24 lg:w-28 lg:h-28 flex items-center justify-center shadow-lg">
-              120+
+              {displayVolunteerCount}+
             </div>
             <p className="text-[#125B9A] mt-3 text-center text-lg lg:text-xl font-semibold">
               Happy Volunteers
+            </p>
+          </div>
+          <div className="flex -space-x-3 ml-6">
+            {[...Array(4)].map((_, i) => (
+              <Image
+                key={i}
+                className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-300 ease-in-out"
+                src={
+                  volunteersImageError
+                    ? logo
+                    : "https://enlightio.com/wp-content/uploads/2022/04/reasons-why-charity-is-important.jpg"
+                }
+                alt="Volunteer"
+                width={100}
+                height={100}
+                onError={() => setVolunteersImageError(true)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Donation Stats */}
+        <div className="bg-white p-6 lg:p-8 shadow-lg rounded-lg flex items-center max-w-sm hover:shadow-2xl -translate-y-24">
+          <div className="flex flex-col items-center">
+            <div className="bg-[#0B8494] text-white text-3xl lg:text-4xl font-bold rounded-full w-24 h-24 lg:w-28 lg:h-28 flex items-center justify-center shadow-lg">
+              ₹ {displayDonationCount}+
+            </div>
+            <p className="text-[#125B9A] mt-3 text-center text-lg lg:text-xl font-semibold">
+              Total Donation
             </p>
           </div>
           <div className="flex -space-x-3 ml-6">

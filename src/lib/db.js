@@ -8,10 +8,6 @@ if (!MONGODB_URI) {
   );
 }
 
-/**
- * Global is used to cache the connection across hot reloads in development to avoid
- * multiple connection attempts.
- */
 let cached = global.mongoose;
 
 if (!cached) {
@@ -27,7 +23,7 @@ export async function connectToDatabase() {
     const opts = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // Set to 5 seconds to fail faster
+      serverSelectionTimeoutMS: 5000,
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {

@@ -1,7 +1,5 @@
-import Donate from "@/components/ui/donate";
-import SignUp from "@/components/ui/signUp";
-import { useState } from "react";
-import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
+import Donate from "@/components/ui/Donate";
+import SignUp from "@/components/ui/SignUp";
 
 export default function GetInvolved() {
   return (

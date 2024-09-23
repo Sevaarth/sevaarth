@@ -25,9 +25,14 @@ const DonationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  status: {
+  paymentStatus: {
     type: String,
     enum: ["pending", "success", "failed"],
+    default: "pending",
+  },
+  emailStatus: {
+    type: String,
+    enum: ["pending", "sent", "failed"],
     default: "pending",
   },
   createdAt: {

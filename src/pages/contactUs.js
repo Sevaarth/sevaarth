@@ -1,8 +1,58 @@
-import React from "react";
+import { useState } from "react";
+import { toast, Toaster } from "react-hot-toast";
 
 const ContactUs = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      toast.success("Your message has been sent! We will contact you soon.");
+      resetFormData();
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const resetFormData = () => {
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
+  };
+
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <section className="bg-beige min-h-screen py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold text-brown text-center mb-8">
@@ -22,7 +72,10 @@ const ContactUs = () => {
                 <h3 className="text-xl font-semibold text-brown mb-4">
                   Contact Form
                 </h3>
-                <form className="bg-white p-6 rounded-lg shadow-lg">
+                <form
+                  className="bg-white p-6 rounded-lg shadow-lg"
+                  onSubmit={handleSubmit}
+                >
                   <div className="mb-4">
                     <label htmlFor="name" className="block text-brown mb-2">
                       Name
@@ -33,6 +86,8 @@ const ContactUs = () => {
                       name="name"
                       placeholder="Your Name"
                       className="w-full p-3 border border-gray-300 rounded-lg"
+                      value={formData.name}
+                      onChange={handleChange}
                       required
                     />
                   </div>
@@ -46,6 +101,8 @@ const ContactUs = () => {
                       name="email"
                       placeholder="Your Email"
                       className="w-full p-3 border border-gray-300 rounded-lg"
+                      value={formData.email}
+                      onChange={handleChange}
                       required
                     />
                   </div>
@@ -59,14 +116,17 @@ const ContactUs = () => {
                       rows="4"
                       placeholder="Your Message"
                       className="w-full p-3 border border-gray-300 rounded-lg"
+                      value={formData.message}
+                      onChange={handleChange}
                       required
                     ></textarea>
                   </div>
                   <button
                     type="submit"
-                    className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition"
+                    className={`bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition ${isLoading ? "opacity-50" : ""}`}
+                    disabled={isLoading}
                   >
-                    Send Message
+                    {isLoading ? "Sending..." : "Send Message"}
                   </button>
                 </form>
               </div>
