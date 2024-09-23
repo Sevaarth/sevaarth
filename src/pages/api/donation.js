@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Donation from "@/models/Donation";
 import Razorpay from "razorpay";
 import { connectToDatabase } from "@/lib/db";
@@ -30,7 +29,7 @@ export default async function handler(req, res) {
         donationAmount,
         comment,
         razorpayOrderId: order.id,
-        status: "pending",
+        paymentStatus: "pending",
       });
 
       await newDonation.save();

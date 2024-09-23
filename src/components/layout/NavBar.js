@@ -1,5 +1,5 @@
+import config from "@/lib/config";
 import Image from "next/image";
-import logo from "/public/images/logoSevaarth.png";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -17,7 +17,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <Link href="/" aria-label="Home">
             <Image
-              src={logo}
+              src={config.logo}
               alt="Sevaarth Logo"
               width={70}
               height={70}

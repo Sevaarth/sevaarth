@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
-import logo from "/public/images/logoSevaarth.png";
 import config from "@/lib/config";
 
 export default function Donate() {
@@ -66,6 +65,7 @@ export default function Donate() {
       setIsLoading(false);
       return;
     }
+    resetFormData();
 
     const { order_id, amount, currency } = data;
 
@@ -73,12 +73,12 @@ export default function Donate() {
       key: config.public_key,
       amount: amount.toString(),
       currency: currency,
-      name: "Sevaarth",
+      name: config.appName,
       description: "Donation",
-      image: logo.src,
+      image: config.logo,
       order_id: order_id,
       handler: async function (response) {
-        const verificationResponse = await fetch("/api/payment-verification", {
+        const verificationResponse = await fetch("/api/paymentVerification", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -97,9 +97,6 @@ export default function Donate() {
         } else {
           toast.error("Payment verification failed.");
         }
-
-        // Clear form after payment (success or failure)
-        resetFormData();
       },
       prefill: {
         name: formData.name,
@@ -112,8 +109,6 @@ export default function Donate() {
       modal: {
         ondismiss: function () {
           toast.error("Payment was cancelled.");
-          // Clear form if the payment gateway is closed
-          resetFormData();
         },
       },
       method: {
@@ -134,7 +129,6 @@ export default function Donate() {
   };
 
   const resetFormData = () => {
-    // Reset form data after payment completion or cancellation
     setFormData({
       name: "",
       email: "",
