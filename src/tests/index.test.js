@@ -9,8 +9,8 @@ jest.mock("@/components/ui/Hero", () => {
   return MockHero;
 });
 
-// Mocking the InfoCards component
-jest.mock("@/components/ui/InfoCards", () => {
+// Mocking the InfoCards component (fixed the import case)
+jest.mock("@/components/ui/infoCards", () => {
   const MockInfoCards = () => <div>InfoCards Component</div>;
   MockInfoCards.displayName = "InfoCards";
   return MockInfoCards;
