@@ -13,8 +13,8 @@ export default function OurLegacy() {
 
         <div className="flex flex-col-reverse md:flex-row items-center pb-16  px-[13%]">
           <div className="container mx-auto  ">
-            <h1 className="text-5xl text-center md:text-start pl-[2%]">
-              ABOUT US
+            <h1 className="text-5xl text-center font-Playfair_Display md:text-start pl-[2%]">
+              OUR STORY
             </h1>
             <p className="text-base md:text-xl text-gray-700 mt-4 md:mt-8 leading-relaxed">
               Sevaarth is a dedicated initiative that aims to provide essential
