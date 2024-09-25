@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import TermsModal from "@/components/ui/TermsModal"; 
 
 export default function VolunteerForm() {
   const [formData, setFormData] = useState({
@@ -7,7 +8,7 @@ export default function VolunteerForm() {
     email: "",
     phoneNumber: "",
     city: "",
-    age: "",
+    dateOfBirth: "",
     volunteerReason: "",
     areasOfInterest: "",
     volunteerRole: "",
@@ -17,7 +18,10 @@ export default function VolunteerForm() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(false); // New state for checkbox
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [skillsArray, setSkillsArray] = useState([]);
+  const [currentSkill, setCurrentSkill] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
 
   const handleChange = (e) => {
     setFormData({
@@ -30,9 +34,27 @@ export default function VolunteerForm() {
     setAcceptTerms(e.target.checked);
   };
 
+  const handleSkillChange = (e) => {
+    setCurrentSkill(e.target.value);
+  };
+
+  const handleSkillKeyDown = (e) => {
+    if (e.key === " " && currentSkill.trim() !== "") {
+      e.preventDefault();
+      setSkillsArray([...skillsArray, currentSkill.trim()]);
+      setCurrentSkill("");
+    }
+  };
+
+  const removeSkill = (index) => {
+    setSkillsArray(skillsArray.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    const dataToSubmit = { ...formData, skills: skillsArray.join(", ") };
 
     try {
       const response = await fetch("/api/volunteer", {
@@ -40,7 +62,7 @@ export default function VolunteerForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSubmit),
       });
 
       const data = await response.json();
@@ -67,7 +89,7 @@ export default function VolunteerForm() {
       email: "",
       phoneNumber: "",
       city: "",
-      age: "",
+      dateOfBirth: "",
       volunteerReason: "",
       areasOfInterest: "",
       volunteerRole: "",
@@ -75,6 +97,8 @@ export default function VolunteerForm() {
       preferredDays: "",
       designation: "",
     });
+    setSkillsArray([]);
+    setCurrentSkill("");
     setAcceptTerms(false);
   };
 
@@ -99,6 +123,7 @@ export default function VolunteerForm() {
               Volunteer Information
             </h2>
 
+            {/* Full Name Field */}
             <div className="mb-4">
               <label
                 htmlFor="fullName"
@@ -118,6 +143,7 @@ export default function VolunteerForm() {
               />
             </div>
 
+            {/* Email Address Field */}
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -137,6 +163,7 @@ export default function VolunteerForm() {
               />
             </div>
 
+            {/* Phone Number Field */}
             <div className="mb-4">
               <label
                 htmlFor="phoneNumber"
@@ -156,6 +183,7 @@ export default function VolunteerForm() {
               />
             </div>
 
+            {/* City Field */}
             <div className="mb-4">
               <label
                 htmlFor="city"
@@ -175,25 +203,27 @@ export default function VolunteerForm() {
               />
             </div>
 
+            {/* Date of Birth Field */}
             <div className="mb-4">
               <label
-                htmlFor="age"
+                htmlFor="dateOfBirth"
                 className="block text-brown text-sm font-medium mb-1"
               >
-                Age
+                Date of Birth
               </label>
               <input
-                type="number"
-                id="age"
-                name="age"
+                type="date"
+                id="dateOfBirth"
+                name="dateOfBirth"
                 className="w-full border border-gray-300 rounded-lg py-2 px-4"
-                value={formData.age}
+                value={formData.dateOfBirth}
                 onChange={handleChange}
                 required
                 aria-required="true"
               />
             </div>
 
+            {/* Volunteer Reason Field */}
             <div className="mb-4">
               <label
                 htmlFor="volunteerReason"
@@ -212,6 +242,7 @@ export default function VolunteerForm() {
               />
             </div>
 
+            {/* Areas of Interest Field */}
             <div className="mb-4">
               <label
                 htmlFor="areasOfInterest"
@@ -230,6 +261,7 @@ export default function VolunteerForm() {
               />
             </div>
 
+            {/* Preferred Role Field */}
             <div className="mb-4">
               <label
                 htmlFor="volunteerRole"
@@ -237,8 +269,7 @@ export default function VolunteerForm() {
               >
                 Preferred Role
               </label>
-              <input
-                type="text"
+              <select
                 id="volunteerRole"
                 name="volunteerRole"
                 className="w-full border border-gray-300 rounded-lg py-2 px-4"
@@ -246,9 +277,19 @@ export default function VolunteerForm() {
                 onChange={handleChange}
                 required
                 aria-required="true"
-              />
+              >
+                <option value="" disabled>
+                  Select your preferred role
+                </option>
+                <option value="Mentor">Mentor</option>
+                <option value="Coordinator">Coordinator</option>
+                <option value="Event Organizer">Event Organizer</option>
+                <option value="Fundraiser">Fundraiser</option>
+                <option value="Volunteer Lead">Volunteer Lead</option>
+              </select>
             </div>
 
+            {/* Skills Field */}
             <div className="mb-4">
               <label
                 htmlFor="skills"
@@ -261,32 +302,44 @@ export default function VolunteerForm() {
                 id="skills"
                 name="skills"
                 className="w-full border border-gray-300 rounded-lg py-2 px-4"
-                value={formData.skills}
-                onChange={handleChange}
-                required
-                aria-required="true"
+                value={currentSkill}
+                onChange={handleSkillChange}
+                onKeyDown={handleSkillKeyDown}
+                placeholder="Type a skill and press space"
               />
+              <div className="mt-2 flex flex-wrap">
+                {skillsArray.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="bg-blue-200 text-blue-800 font-medium mr-2 mb-2 px-3 py-1 rounded-full cursor-pointer"
+                    onClick={() => removeSkill(index)} // Allow user to remove a skill on click
+                  >
+                    {skill} &times;
+                  </span>
+                ))}
+              </div>
             </div>
 
+            {/* Preferred Days Field */}
             <div className="mb-4">
               <label
                 htmlFor="preferredDays"
                 className="block text-brown text-sm font-medium mb-1"
               >
-                Preferred Days
+                Preferred Days to Volunteer
               </label>
-              <input
-                type="text"
+              <textarea
                 id="preferredDays"
                 name="preferredDays"
                 className="w-full border border-gray-300 rounded-lg py-2 px-4"
                 value={formData.preferredDays}
                 onChange={handleChange}
-                required
+                required    
                 aria-required="true"
               />
             </div>
 
+            {/* Designation Field */}
             <div className="mb-4">
               <label
                 htmlFor="designation"
@@ -306,6 +359,7 @@ export default function VolunteerForm() {
               />
             </div>
 
+            {/* Terms and Conditions Checkbox */}
             <div className="mb-4 flex items-center">
               <input
                 type="checkbox"
@@ -316,10 +370,19 @@ export default function VolunteerForm() {
                 required
               />
               <label htmlFor="acceptTerms" className="text-brown text-sm">
-                I accept the terms and conditions
+                I accept the terms and conditions, which includes that your
+                information will be used to provide certifications of successful
+                completion of your role.{" "}
+                <span
+                  className="text-blue-600 cursor-pointer"
+                  onClick={() => setIsModalOpen(true)} // Open modal
+                >
+                  Read terms and conditions
+                </span>
               </label>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               className={`bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-primary-dark w-full ${
@@ -332,6 +395,9 @@ export default function VolunteerForm() {
           </form>
         </div>
       </div>
+
+      {/* Terms Modal */}
+      <TermsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </main>
   );
 }

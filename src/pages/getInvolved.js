@@ -1,5 +1,5 @@
-import Donate from "@/components/ui/donate";
-import SignUp from "@/components/ui/signUp";
+import Donate from "@/components/ui/Donate";
+import SignUp from "@/components/ui/SignUp";
 
 export default function GetInvolved() {
   return (
