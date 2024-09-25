@@ -26,6 +26,7 @@ module.exports = {
       },
       fontFamily: {
         Italianno: ["Italianno"],
+        Playfair_Display: ["Playfair Display"],
       },
     },
   },
