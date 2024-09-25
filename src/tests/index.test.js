@@ -9,8 +9,8 @@ jest.mock("@/components/ui/Hero", () => {
   return MockHero;
 });
 
-// Mocking the InfoCards component (fixed the import case)
-jest.mock("@/components/ui/infoCards", () => {
+// Mocking the InfoCards component
+jest.mock("@/components/ui/InfoCards", () => {
   const MockInfoCards = () => <div>InfoCards Component</div>;
   MockInfoCards.displayName = "InfoCards";
   return MockInfoCards;
@@ -31,7 +31,7 @@ jest.mock("@/components/ui/ProgrammesSection", () => {
 });
 
 describe("Home Page", () => {
-  it("renders Hero, InfoCards, OurWork, and ProgrammesSection components", () => {
+  it("should render Hero, InfoCards, OurWork, and ProgrammesSection components", () => {
     render(<Home />);
 
     expect(screen.getByText("Hero Component")).toBeInTheDocument();
