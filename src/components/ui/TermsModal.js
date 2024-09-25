@@ -13,9 +13,7 @@ const TermsModal = ({ isOpen, onClose }) => {
         </p>
         <ul className="list-disc list-inside mb-4">
           <li>You will commit to your chosen volunteer role.</li>
-          <li>
-            You agree to provide accurate information for certification.
-          </li>
+          <li>You agree to provide accurate information for certification.</li>
           <li>
             You understand that your information will be used to provide
             certifications of successful completion of your role.
@@ -24,8 +22,10 @@ const TermsModal = ({ isOpen, onClose }) => {
             You agree to follow all guidelines and procedures set by the
             organization.
           </li>
-          <li>Your participation may be subject to change based on
-            organizational needs.</li>
+          <li>
+            Your participation may be subject to change based on organizational
+            needs.
+          </li>
         </ul>
         <button
           className="bg-primary text-white py-2 px-4 rounded-lg mt-4"

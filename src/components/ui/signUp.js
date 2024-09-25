@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
-import TermsModal from "@/components/ui/TermsModal"; 
+import TermsModal from "@/components/ui/TermsModal";
 
 export default function VolunteerForm() {
   const [formData, setFormData] = useState({
@@ -334,7 +334,7 @@ export default function VolunteerForm() {
                 className="w-full border border-gray-300 rounded-lg py-2 px-4"
                 value={formData.preferredDays}
                 onChange={handleChange}
-                required    
+                required
                 aria-required="true"
               />
             </div>

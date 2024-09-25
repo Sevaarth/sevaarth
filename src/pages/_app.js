@@ -11,7 +11,7 @@ export const metadata = {
 function MyApp({ Component, pageProps }) {
   return (
     <>
-       <Head>
+      <Head>
         <link rel="icon" href="/favicon.ico" />
         <title>Sevaarth</title>
         <meta name="Sevaarth Description" content={metadata.description} />

@@ -38,7 +38,9 @@ const Footer = () => {
               alt="Sevaarth Logo"
             />
           </a>
-          <p className="mt-4 text-sm text-center md:text-left">Join us in making a difference!</p>
+          <p className="mt-4 text-sm text-center md:text-left">
+            Join us in making a difference!
+          </p>
           {/* Social media icons */}
           <div className="flex mt-4 justify-center md:justify-start space-x-4 text-green-300">
             <a
