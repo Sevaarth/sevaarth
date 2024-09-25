@@ -37,6 +37,8 @@ describe("Home Page", () => {
     expect(screen.getByText("Hero Component")).toBeInTheDocument();
     expect(screen.getByText("InfoCards Component")).toBeInTheDocument();
     expect(screen.getByText("Our Work Component")).toBeInTheDocument();
-    expect(screen.getByText("Programmes Section Component")).toBeInTheDocument();
+    expect(
+      screen.getByText("Programmes Section Component"),
+    ).toBeInTheDocument();
   });
 });
