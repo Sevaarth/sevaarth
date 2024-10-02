@@ -38,7 +38,7 @@ const Navbar = () => {
           {[
             "/",
             "/ourLegacy",
-            "/ourIntiatives",
+            "/ourInitiatives",
             "/getInvolved",
             "/contactUs",
           ].map((link) => (
@@ -93,7 +93,7 @@ const Navbar = () => {
             {[
               "/",
               "/ourLegacy",
-              "/ourIntiatives",
+              "/ourInitiatives",
               "/getInvolved",
               "/contactUs",
             ].map((link) => (
