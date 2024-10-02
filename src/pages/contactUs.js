@@ -95,7 +95,8 @@ const ContactUs = () => {
                 Get in Touch
               </CardTitle>
               <CardDescription>
-                Share your thoughts, questions, or how you'd like to contribute.
+                Share your thoughts, questions, or how you&apos;d like to
+                contribute.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -188,7 +189,7 @@ const ContactUs = () => {
                   Our Impact
                 </CardTitle>
                 <CardDescription>
-                  Together, we're making a difference
+                  Together, we&apos;re making a difference
                 </CardDescription>
               </CardHeader>
               <CardContent>

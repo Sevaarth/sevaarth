@@ -5,13 +5,20 @@ import { useState } from "react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState("/"); // Track the active link
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  // Function to handle link click
+  const handleLinkClick = (link) => {
+    setActiveLink(link); // Set the clicked link as active
+    setIsOpen(false); // Close the mobile menu
+  };
+
   return (
-    <nav className="bg-[#161D6F] w-full z-10 top-0">
+    <nav className="bg-[#063150] w-full z-10 top-0">
       <div className="container mx-auto flex justify-between items-center md:px-0 lg:px-6 px-6 py-4">
         {/* Logo Section */}
         <div className="flex items-center">
@@ -27,41 +34,37 @@ const Navbar = () => {
         </div>
 
         {/* Menu Section */}
-        <div className="hidden md:flex space-x-6 font-bold ">
-          <Link
-            href="/"
-            className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-          >
-            Home
-          </Link>
-          <Link
-            href="/ourLegacy"
-            className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-          >
-            Our Legacy
-          </Link>
-          <Link
-            href="/ourIntiatives"
-            className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-          >
-            Our Initiatives
-          </Link>
-          <Link
-            href="/getInvolved"
-            className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-          >
-            Get Involved
-          </Link>
-          <Link
-            href="/contactUs"
-            className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-          >
-            Contact Us
-          </Link>
+        <div className="hidden md:flex space-x-6 font-bold">
+          {[
+            "/",
+            "/ourLegacy",
+            "/ourIntiatives",
+            "/getInvolved",
+            "/contactUs",
+          ].map((link) => (
+            <Link
+              key={link}
+              href={link}
+              className={`px-4 py-2 rounded-lg transition duration-300 ${
+                activeLink === link
+                  ? "text-green-300"
+                  : "text-white hover:bg-gray-800 hover:text-gray-200"
+              }`}
+              onClick={() => handleLinkClick(link)} // Handle link click
+            >
+              {link === "/"
+                ? "Home"
+                : link
+                    .replace("/", "")
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()}{" "}
+              {/* Formatting the link names */}
+            </Link>
+          ))}
         </div>
 
         {/* Hamburger Menu for Mobile */}
-        <div className="md:hidden ">
+        <div className="md:hidden">
           <button
             className="text-white focus:outline-none"
             onClick={toggleMenu}
@@ -86,42 +89,31 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden absolute top-16 right-0  bg-[#1b5c96] flex flex-col items-center py-4 space-y-4  rounded-xs">
-            <Link
-              href="/"
-              className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg  "
-              onClick={toggleMenu}
-            >
-              Home
-            </Link>
-            <Link
-              href="/ourLegacy"
-              className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-              onClick={toggleMenu}
-            >
-              Our Legacy
-            </Link>
-            <Link
-              href="/ourIntiatives"
-              className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-              onClick={toggleMenu}
-            >
-              Our Initiatives
-            </Link>
-            <Link
-              href="/getInvolved"
-              className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-              onClick={toggleMenu}
-            >
-              Get Involved
-            </Link>
-            <Link
-              href="/contactUs"
-              className="text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg transition duration-300"
-              onClick={toggleMenu}
-            >
-              Contact Us
-            </Link>
+          <div className="md:hidden absolute top-16 right-0 bg-[#1b5c96] flex flex-col items-center py-4 space-y-4 rounded-xs">
+            {[
+              "/",
+              "/ourLegacy",
+              "/ourIntiatives",
+              "/getInvolved",
+              "/contactUs",
+            ].map((link) => (
+              <Link
+                key={link}
+                href={link}
+                className={`text-white hover:bg-gray-800 hover:text-gray-200 px-4 py-2 rounded-lg ${
+                  activeLink === link ? "text-green-300" : ""
+                }`}
+                onClick={() => handleLinkClick(link)} // Handle link click
+              >
+                {link === "/"
+                  ? "Home"
+                  : link
+                      .replace("/", "")
+                      .replace(/([A-Z])/g, " $1")
+                      .trim()}{" "}
+                {/* Formatting the link names */}
+              </Link>
+            ))}
           </div>
         )}
       </div>

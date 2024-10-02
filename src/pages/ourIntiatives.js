@@ -10,8 +10,8 @@ const Card = ({ imageSrc, imageAlt, title, description }) => {
   };
 
   return (
-    <div className="flex bg-gray-600 rounded-lg shadow-lg p-6 items-center space-x-6">
-      <div className="w-24 h-24 bg-gray-200 rounded-full flex-shrink-0 overflow-hidden">
+    <div className="flex flex-col md:flex-row bg-gray-600 rounded-lg shadow-lg p-4 md:p-6 items-center space-x-0 md:space-x-6 mb-4">
+      <div className="w-24 h-24 bg-gray-200 rounded-full flex-shrink-0 overflow-hidden mb-4 md:mb-0">
         <Image
           src={src}
           alt={imageAlt}
@@ -22,28 +22,28 @@ const Card = ({ imageSrc, imageAlt, title, description }) => {
         />
       </div>
       <div className="text-white flex-1">
-        <h2 className="text-xl font-semibold mb-2">{title}</h2>
-        <p className="text-sm">{description}</p>
+        <h2 className="text-lg md:text-xl font-semibold mb-2">{title}</h2>
+        <p className="text-sm md:text-base">{description}</p>
       </div>
     </div>
   );
 };
 
-const CustomLayout = () => {
+const OurIntiatives = () => {
   const cards = [
     {
       imageSrc: "/images/elderly.jpg", // Correct path in the public folder
       imageAlt: "Elderly Care",
-      title: "supporting elderly individuals",
+      title: "Supporting Elderly Individuals",
       description:
-        "The primary focus of Sevaarth is to assist seniors who are experiencing financial difficulties. Many elderly individuals live on fixed incomes, which can make it challenging to afford basic necessities. By providing support, we aim to alleviate some of the financial burdens they face. Collecting donations: To fulfill our mission, we actively gather donations from community members, local businesses, and organizations. These contributions are crucial as they allow us to provide essential items that can significantly improve the lives of elderly individuals in need.In that whatever essential items we provide In addition to groceries, we recognize the importance of providing other crucial items that contribute to a comfortable life. This may include personal hygiene products, cleaning supplies, and other necessities that help seniors maintain their dignity and well-being. Our ultimate goal is to enable elderly individuals to live with dignity and comfort. Team Sevaarth believe that everyone deserves to have their basic needs met, and we work tirelessly to ensure that seniors can enjoy a quality life without the constant worry of financial strain.Your Little Contribution can create a supportive environment that uplifts our elderly population.",
+        "The primary focus of Sevaarth is to assist seniors who are experiencing financial difficulties. Many elderly individuals live on fixed incomes, which can make it challenging to afford basic necessities. By providing support, we aim to alleviate some of the financial burdens they face. Collecting donations: To fulfill our mission, we actively gather donations from community members, local businesses, and organizations. These contributions are crucial as they allow us to provide essential items that can significantly improve the lives of elderly individuals in need. In addition to groceries, we recognize the importance of providing other crucial items that contribute to a comfortable life. This may include personal hygiene products, cleaning supplies, and other necessities that help seniors maintain their dignity and well-being. Our ultimate goal is to enable elderly individuals to live with dignity and comfort. Team Sevaarth believes that everyone deserves to have their basic needs met, and we work tirelessly to ensure that seniors can enjoy a quality life without the constant worry of financial strain. Your little contribution can create a supportive environment that uplifts our elderly population.",
     },
     {
       imageSrc: "/images/education.jpg", // Correct path in the public folder
       imageAlt: "Child Education",
       title: "Underprivileged Child Education",
       description:
-        " Education is a powerful tool that can help lift families out of poverty. By providing educational support to children, we aim to create opportunities for them to succeed and build a better future. Every child has unique talents and abilities. By investing in their education, we help them discover and develop these skills, enabling them to pursue their dreams and aspirations. By empowering them through education, we hope to inspire a new generation of leaders who will work towards creating a better world for everyone.",
+        "Education is a powerful tool that can help lift families out of poverty. By providing educational support to children, we aim to create opportunities for them to succeed and build a better future. Every child has unique talents and abilities. By investing in their education, we help them discover and develop these skills, enabling them to pursue their dreams and aspirations. By empowering them through education, we hope to inspire a new generation of leaders who will work towards creating a better world for everyone.",
     },
     {
       imageSrc: "/images/health.jpg", // Correct path in the public folder
@@ -78,7 +78,7 @@ const CustomLayout = () => {
   return (
     <div className="bg-gray-800 min-h-screen py-10">
       <div className="flex items-center justify-center">
-        <div className="space-y-6 max-w-4xl mx-auto">
+        <div className="space-y-4 max-w-4xl mx-auto">
           {cards.map((card, index) => (
             <Card
               key={index}
@@ -94,4 +94,4 @@ const CustomLayout = () => {
   );
 };
 
-export default CustomLayout;
+export default OurIntiatives;
