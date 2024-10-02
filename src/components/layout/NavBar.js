@@ -11,7 +11,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#0B8494] via-[#125B9A] to-[#507687] w-full z-10 top-0">
+    <nav className="bg-[#161D6F] w-full z-10 top-0">
       <div className="container mx-auto flex justify-between items-center md:px-0 lg:px-6 px-6 py-4">
         {/* Logo Section */}
         <div className="flex items-center">
