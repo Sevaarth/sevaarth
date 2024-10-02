@@ -4,13 +4,12 @@ import SignUp from "@/components/ui/SignUp";
 export default function GetInvolved() {
   return (
     <>
-    <div id="volunteer">
+      <div id="volunteer">
         <SignUp />
       </div>
       <div id="donate">
         <Donate />
       </div>
-      
     </>
   );
 }

@@ -20,7 +20,6 @@ const Card = ({ title, description, link }) => {
 
   return (
     <div className="w-[80%] h-[70%] flex flex-col justify-center items-center  text-center z-20 relative bg-[#326c64af]">
-     
       <h3 className="text-4xl font-extrabold text-white mb-3 drop-shadow-md">
         {title}
       </h3>
