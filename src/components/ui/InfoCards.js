@@ -1,113 +1,118 @@
-import Image from "next/image";
-import { useState, useEffect } from "react";
+// components/InfoCards.js
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useRouter } from "next/router";
-import fallbackImage from "/public/images/logoSevaarth.png"; // Fallback image
+import Image from "next/image"; // Using next/image for optimized image handling
+import GAREEB from "/public/images/GAREEB.jpg";
+import FOOD from "/public/images/FOOD.jpg";
 
-// Custom Hook for Image Error Handling
-const useImageError = (initialImgSrc) => {
-  const [imgSrc, setImgSrc] = useState(initialImgSrc);
-
-  const handleError = () => setImgSrc(fallbackImage);
-
-  return [imgSrc, handleError];
-};
-
-// Reusable Card Component
-const Card = ({ imgSrc, title, description, link }) => {
-  const [imageSrc, handleImageError] = useImageError(imgSrc);
-  const router = useRouter(); // Initialize useRouter
+// Reusable Card Component (without Image and Card container)
+const Card = ({ title, description, link }) => {
+  const router = useRouter();
 
   const handleClick = () => {
-    router.push(link); // Navigate to the specified link
+    if (link) {
+      router.push(link); // Navigate to the specified link
+    } else {
+      console.error("Link is missing or invalid"); // Error handling for missing links
+    }
   };
 
   return (
-    <div className="text-center flex flex-col items-center max-w-sm">
-      <div className="mb-6">
-        <Image
-          src={imageSrc}
-          alt={title}
-          width={100}
-          height={100}
-          className="rounded-full object-cover transition-opacity duration-500 hover:opacity-90"
-          onError={handleImageError}
-        />
-      </div>
-      <h3 className="text-3xl font-extrabold text-white mb-3">{title}</h3>
-      <p className="text-base text-gray-200 mb-8 px-4">{description}</p>
+    <div className="text-center z-20 relative">
+      <h3 className="text-4xl font-extrabold text-white mb-3 drop-shadow-md">
+        {title}
+      </h3>
+      <p className="text-gray-200 mb-6 text-lg drop-shadow-sm">{description}</p>
       <button
         onClick={handleClick}
-        className="bg-orange-500 text-white font-semibold tracking-wide px-6 py-3 rounded-full hover:bg-orange-600 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl"
+        className="bg-orange-500 text-white font-semibold py-3 px-6 rounded-full hover:bg-orange-600 transition-all duration-300 ease-in-out shadow-lg"
+        aria-label={`Learn more about ${title}`}
       >
-        Click here
+        Learn More
       </button>
     </div>
   );
 };
 
-// Main InfoCards Component with Slideshow and Enhanced UX/UI
+// Main InfoCards Component with Carousel and Enhanced UX/UI
 export default function InfoCards() {
+  // Sample data for the cards
   const cardsData = [
     {
-      imgSrc: "/images/volunteer.png", // Replace with your image path
       title: "Become a Volunteer",
       description:
         "Join hands to help us achieve more. Alone, I can do little. Together, we can do anything.",
-      link: "/getInvolved#volunteer", // Add link for volunteer section
-      backgroundImage: "/images/bg-volunteer.jpg", // Replace with your background image
+      link: "/getInvolved#volunteer",
+      backgroundImage: GAREEB.src,
     },
     {
-      imgSrc: "/images/donate.png", // Replace with your image path
       title: "Start Donating",
       description:
         "Your contribution, no matter the size, can make a big difference in the world.",
-      link: "/getInvolved#donate", // Add link for donate section
-      backgroundImage: "/images/bg-donate.jpg", // Replace with your background image
+      link: "/getInvolved#donate",
+      backgroundImage: FOOD.src,
     },
   ];
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  // Slideshow effect, cycling every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % cardsData.length);
-    }, 3000); // 3 seconds
-    return () => clearInterval(interval);
-  }, [cardsData.length]);
-
-  const activeCard = cardsData[activeIndex];
+  // Error Handling: Ensure cardsData exists and is not empty
+  if (!cardsData || cardsData.length === 0) {
+    return (
+      <p className="text-center ">No information available at this time.</p>
+    );
+  }
 
   return (
-    <div
-      className="relative flex items-center justify-center h-screen"
-      style={{
-        backgroundImage: `url(${activeCard.backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        transition: "background-image 0.8s ease-in-out",
-      }}
-    >
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-gray-700 to-black opacity-70"></div>
+    <>
+      <h2 className="text-5xl font-extrabold text-center  drop-shadow-lg mt-12">
+        Join Us in Making a Difference
+      </h2>
+      <div className="h-screen  bg-opacity-75 relative overflow-hidden">
+        {/* Carousel Section */}
+        <Carousel
+          showThumbs={false}
+          infiniteLoop
+          autoPlay
+          interval={3000}
+          showStatus={false}
+          className="z-10 mt-12"
+          dynamicHeight={false}
+        >
+          {cardsData.map((card, index) => (
+            <div
+              key={index}
+              className="flex justify-center items-center relative"
+              style={{
+                backgroundImage: `url(${card.backgroundImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "100vh",
+                transition: "background-image 0.8s ease-in-out",
+              }}
+            >
+              {/* Overlay to darken the background for better text readability */}
+              <div className="absolute inset-0 z-20 bg-black opacity-60"></div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
-        {/* Page Title */}
-        <h2 className="text-5xl font-extrabold text-center mb-12 text-white drop-shadow-lg">
-          Join Us in Making a Difference
-        </h2>
+              {/* Image component (optional), improves performance */}
+              <Image
+                src={card.backgroundImage}
+                alt={card.title}
+                layout="fill"
+                objectFit="cover"
+                className="hidden" // Using it in background instead of directly displaying
+                quality={100}
+              />
 
-        {/* Card Content */}
-        <div className="flex justify-center">
-          <Card
-            key={activeIndex}
-            imgSrc={activeCard.imgSrc}
-            title={activeCard.title}
-            description={activeCard.description}
-            link={activeCard.link}
-          />
-        </div>
+              {/* Reusable Card component */}
+              <Card
+                title={card.title}
+                description={card.description}
+                link={card.link}
+              />
+            </div>
+          ))}
+        </Carousel>
       </div>
-    </div>
+    </>
   );
 }

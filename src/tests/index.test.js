@@ -30,12 +30,20 @@ jest.mock("@/components/ui/ProgrammesSection", () => {
   return MockProgrammesSection;
 });
 
+// Mocking the Template component
+jest.mock("@/components/ui/Template", () => {
+  const MockTemplate = () => <div>Template Component</div>;
+  MockTemplate.displayName = "Template";
+  return MockTemplate;
+});
+
 describe("Home Page", () => {
-  it("should render Hero, InfoCards, OurWork, and ProgrammesSection components", () => {
+  it("should render Hero, InfoCards, Template, OurWork, and ProgrammesSection components", () => {
     render(<Home />);
 
     expect(screen.getByText("Hero Component")).toBeInTheDocument();
     expect(screen.getByText("InfoCards Component")).toBeInTheDocument();
+    expect(screen.getByText("Template Component")).toBeInTheDocument(); // Check for Template
     expect(screen.getByText("Our Work Component")).toBeInTheDocument();
     expect(
       screen.getByText("Programmes Section Component"),
