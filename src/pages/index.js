@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <Hero />
       <InfoCards />
-      <Template/>
+      <Template />
       <OurWork />
       <ProgrammesSection />
     </>
