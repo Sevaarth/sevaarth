@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/common/card";
+} from "@/components/common/Card";
 import { Label } from "@/components/common/Label";
 import { Input } from "@/components/common/Input";
 import { Textarea } from "@/components/common/Textarea";
@@ -15,10 +15,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/common/select";
-import { Button } from "@/components/common/button";
-import { Checkbox } from "@/components/common/checkbox";
-import { Badge } from "@/components/common/badge";
+} from "@/components/common/Select";
+import { Button } from "@/components/common/Button";
+import { Checkbox } from "@/components/common/Checkbox";
+import { Badge } from "@/components/common/Badge";
 import TermsModal from "@/components/ui/TermsModal";
 import {
   Loader2,
