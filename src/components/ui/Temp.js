@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-
+import FallbackImage from "/public/images/logoSevaarth.png";
 const trail = () => {
   return (
     <>
@@ -20,9 +20,9 @@ const trail = () => {
                 <button className="bg-orange-500 text-white px-8 py-3 rounded-full hover:bg-orange-600 transition">
                   Donate Now
                 </button>
-                <button className="border-2 border-orange-500 text-orange-500 px-8 py-3 rounded-full hover:bg-orange-500 hover:text-white transition">
+                {/* <button className="border-2 border-orange-500 text-orange-500 px-8 py-3 rounded-full hover:bg-orange-500 hover:text-white transition">
                   Volunteer
-                </button>
+                </button> */}
               </div>
             </div>
             <div className="md:w-1/2 flex justify-center">
@@ -34,11 +34,6 @@ const trail = () => {
                   width={400}
                   height={400}
                 />
-                <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-lg shadow-lg">
-                  <p className="text-2xl font-Italianno text-orange-500">
-                    sevaarth
-                  </p>
-                </div>
               </div>
             </div>
           </div>
