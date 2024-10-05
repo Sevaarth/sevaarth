@@ -6,8 +6,7 @@ export default async function handler(req, res) {
     try {
       const { db } = await connectToDatabase();
 
-      // Fetch total donation amounts with paymentStatus "success"
-      const totalDonations = await Donation.aggregate([
+      const donations = await Donation.aggregate([
         {
           $match: {
             paymentStatus: "success",
@@ -17,17 +16,30 @@ export default async function handler(req, res) {
           $group: {
             _id: null,
             totalAmount: { $sum: "$donationAmount" },
+            donations: {
+              $push: {
+                donorName: "$donorName",
+                donationPurpose: "$donationPurpose",
+                donationAmount: "$donationAmount",
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            totalAmount: 1,
+            donations: 1,
           },
         },
       ]);
 
-      // If no donations found, return totalAmount as 0
-      const totalAmount =
-        totalDonations.length > 0 ? totalDonations[0].totalAmount : 0;
+      const result =
+        donations.length > 0 ? donations[0] : { totalAmount: 0, donations: [] };
 
-      res.status(200).json({ totalAmount });
+      res.status(200).json(result);
     } catch (error) {
-      console.error("Error fetching total donations:", error);
+      console.error("Error fetching donations:", error);
       res.status(500).json({ message: "Internal Server Error", error });
     }
   } else {
