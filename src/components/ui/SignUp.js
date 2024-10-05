@@ -155,7 +155,7 @@ export default function CompleteVolunteerForm() {
               </h2>
               <p className="text-gray-600">
                 Your volunteer application has been submitted successfully.
-                We'll be in touch soon!
+                We&apos;ll be in touch soon!
               </p>
             </CardContent>
           </Card>
@@ -164,7 +164,7 @@ export default function CompleteVolunteerForm() {
             <CardHeader>
               <CardTitle className="text-2xl">Volunteer Application</CardTitle>
               <CardDescription>
-                Tell us about yourself and how you'd like to help.
+                Tell us about yourself and how you&apos;d like to help.
               </CardDescription>
             </CardHeader>
             <CardContent>
