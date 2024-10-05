@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/common/card";
 import config from "@/lib/config";
 
 export default function Donate() {
@@ -140,168 +146,151 @@ export default function Donate() {
   };
 
   return (
-    <main className="bg-beige min-h-screen py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <main className=" flex flex-col items-center min-h-screen py-12 px-4">
+      <h1 className="text-5xl font-bold text-primary text-center">Donate</h1>
+      <p className="text-xl text-gray-700 mt-8 leading-relaxed text-center w-[60%]">
+        Your donation helps us continue our work of supporting elderly
+        individuals, educating children, and empowering women.
+      </p>
+      <div className="max-w-xl mx-auto mt-6">
         <Toaster position="top-center" reverseOrder={false} />
 
-        <h1 className="text-5xl font-bold text-primary text-center">Donate</h1>
-        <p className="text-xl text-gray-700 mt-8 leading-relaxed text-center">
-          Your donation helps us continue our work of supporting elderly
-          individuals, educating children, and empowering women.
-        </p>
-
-        <div className="flex flex-col items-center">
-          <form
-            className="bg-white p-8 rounded-lg shadow-lg w-full md:w-2/3 lg:w-1/2 transition-all duration-500 hover:shadow-xl"
-            onSubmit={handleSubmit}
-          >
-            <h2 className="text-2xl font-semibold text-brown mb-6">
+        <Card className="shadow-lg ">
+          <CardHeader>
+            <CardTitle className="text-5xl font-bold text-primary text-center">
               Make a Donation
-            </h2>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <FormField
+                  label="Full Name"
+                  name="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+                <FormField
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-brown text-sm font-medium mb-1"
-              >
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="w-full border border-gray-300 rounded-lg py-2 px-4"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                aria-required="true"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-brown text-sm font-medium mb-1"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="w-full border border-gray-300 rounded-lg py-2 px-4"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                aria-required="true"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="phone"
-                className="block text-brown text-sm font-medium mb-1"
-              >
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                id="phone"
+              <FormField
+                label="Phone Number"
                 name="phone"
-                className="w-full border border-gray-300 rounded-lg py-2 px-4"
+                type="tel"
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                aria-required="true"
               />
-            </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="donationPurpose"
-                className="block text-brown text-sm font-medium mb-1"
-              >
-                Donation Purpose
-              </label>
-              <input
-                type="text"
-                id="donationPurpose"
+              <FormField
+                label="Donation Purpose"
                 name="donationPurpose"
-                className="w-full border border-gray-300 rounded-lg py-2 px-4"
+                type="text"
                 value={formData.donationPurpose}
                 onChange={handleChange}
                 required
-                aria-required="true"
               />
-            </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="donationAmount"
-                className="block text-brown text-sm font-medium mb-1"
-              >
-                Donation Amount (₹)
-              </label>
-              <input
-                type="amount"
-                id="donationAmount"
-                name="donationAmount"
-                className="w-full border border-gray-300 rounded-lg py-2 px-4"
-                value={formData.donationAmount}
-                onChange={handleChange}
-                min="1"
-                required
-                aria-required="true"
-              />
-            </div>
-
-            <div className="mb-4">
-              <p className="text-brown text-sm font-medium mb-1">
-                Or select a preset amount:
-              </p>
-              <div className="flex space-x-2  flex-wrap justify-center gap-1">
-                {presetAmounts.map((amount) => (
-                  <button
-                    key={amount}
-                    type="button"
-                    className="bg-[#7eabc1] py-2 px-4 rounded-lg text-white hover:bg-[#57a4ca]"
-                    onClick={() => handlePresetClick(amount)}
-                  >
-                    ₹{amount}
-                  </button>
-                ))}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Donation Amount (₹)
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {presetAmounts.map((amount) => (
+                    <button
+                      key={amount}
+                      type="button"
+                      onClick={() => handlePresetClick(amount)}
+                      className={`py-2 px-4 rounded-md transition-all ${
+                        formData.donationAmount === amount
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+                      }`}
+                    >
+                      ₹{amount}
+                    </button>
+                  ))}
+                </div>
+                <FormField
+                  name="donationAmount"
+                  type="number"
+                  value={formData.donationAmount}
+                  onChange={handleChange}
+                  placeholder="Or enter custom amount"
+                  required
+                />
               </div>
-            </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="comment"
-                className="block text-brown text-sm font-medium mb-1"
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Additional Comments
+                </label>
+                <textarea
+                  name="comment"
+                  rows={4}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={formData.comment}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-2 px-4 rounded-md bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
-                Optional Comment
-              </label>
-              <textarea
-                id="comment"
-                name="comment"
-                className="w-full border border-gray-300 rounded-lg py-2 px-4"
-                value={formData.comment}
-                onChange={handleChange}
-                aria-required="false"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className={`bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-primary-dark w-full ${
-                isLoading ? "opacity-50" : ""
-              }`}
-              disabled={isLoading}
-            >
-              {isLoading ? "Processing..." : "Donate Now"}
-            </button>
-          </form>
-        </div>
+                {isLoading ? (
+                  <span className="flex items-center justify-center">
+                    Processing...
+                  </span>
+                ) : (
+                  "Donate Now"
+                )}
+              </button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </main>
+  );
+}
+
+function FormField({
+  label,
+  name,
+  type,
+  value,
+  onChange,
+  required,
+  placeholder,
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-700 mb-1"
+      >
+        {label}
+      </label>
+      <input
+        type={type}
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        placeholder={placeholder}
+        className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
   );
 }

@@ -17,9 +17,15 @@ const VolunteerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  age: {
-    type: Number,
+  dateOfBirth: {
+    type: Date,
     required: true,
+    // validate: {
+    //   validator: function(value) {
+    //     return value < Date.now();
+    //   },
+    //   message: 'Date of birth must be in the past.',
+    // },
   },
   volunteerReason: {
     type: String,

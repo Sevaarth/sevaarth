@@ -7,7 +7,7 @@ import Link from "next/link";
 import { FiFlag } from "react-icons/fi";
 import { GiTargetShot } from "react-icons/gi";
 
-const Template = () => {
+const Legacy = () => {
   const handleImageError = (e) => {
     e.target.src = "/public/images/logoSevaarth.png"; // Fallback image in case of error
   };
@@ -106,4 +106,4 @@ const Template = () => {
   );
 };
 
-export default Template;
+export default Legacy;
