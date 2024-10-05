@@ -6,9 +6,9 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/common/card";
-import { Label } from "@/components/common/label";
-import { Input } from "@/components/common/input";
-import { Textarea } from "@/components/common/textarea";
+import { Label } from "@/components/common/Label";
+import { Input } from "@/components/common/Input";
+import { Textarea } from "@/components/common/Textarea";
 import {
   Select,
   SelectContent,

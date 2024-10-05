@@ -5,7 +5,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/common/card";
+} from "@/components/common/Card";
 import config from "@/lib/config";
 
 export default function Donate() {

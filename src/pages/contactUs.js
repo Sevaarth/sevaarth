@@ -6,10 +6,10 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/common/card";
-import { Input } from "@/components/common/input";
-import { Textarea } from "@/components/common/textarea";
-import { Button } from "@/components/common/button";
+} from "@/components/common/Card";
+import { Input } from "@/components/common/Input";
+import { Textarea } from "@/components/common/Textarea";
+import { Button } from "@/components/common/Button";
 
 import {
   Mail,
