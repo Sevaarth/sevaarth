@@ -1,11 +1,15 @@
-import Donate from "@/components/ui/donate";
-import SignUp from "@/components/ui/signUp";
+import Donate from "@/components/ui/Donate";
+import SignUp from "@/components/ui/SignUp";
 
 export default function GetInvolved() {
   return (
-    <>
-      <Donate />
-      <SignUp />
-    </>
+    <div className="bg-[#a5b3bf20]">
+      <div id="donate">
+        <Donate />
+      </div>
+      <div id="volunteer">
+        <SignUp />
+      </div>
+    </div>
   );
 }
