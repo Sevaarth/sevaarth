@@ -1,13 +1,14 @@
-import Donate from "@/components/ui/donate";
-import SignUp from "@/components/ui/signUp";
-import { useState } from "react";
-import { toast, Toaster } from "react-hot-toast"; // Import react-hot-toast
+import SignUp from "@/components/ui/SignUp";
 
 export default function GetInvolved() {
   return (
-    <>
-      <Donate />
-      <SignUp />
-    </>
+    <div className="bg-[#a5b3bf20]">
+      {/* <div id="donate">
+        <Donate />
+      </div> */}
+      <div id="volunteer">
+        <SignUp />
+      </div>
+    </div>
   );
 }

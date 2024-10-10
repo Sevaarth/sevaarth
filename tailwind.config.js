@@ -4,8 +4,6 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
-
-    // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
@@ -16,18 +14,22 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        primary: "#4592AF", // Main Highlight Color
-        secondary: "#33313B", // Dark Text Color
-        accent: "#E3C4A8", // Accent Color for Highlights
-        background: "#F6F5F5", // Light Background Color
-        darkBlue: "#201E43", // Dark Blue
-        mediumBlue: "#134B70", // Medium Blue
-        lightBlue: "#508C9B", // Light Blue
+        primary: "#4592AF",
+        secondary: "#33313B",
+        accent: "#E3C4A8",
+        background: "#F6F5F5",
+        darkBlue: "#201E43",
+        mediumBlue: "#134B70",
+        lightBlue: "#508C9B",
       },
       fontFamily: {
         Italianno: ["Italianno"],
+        Playfair_Display: ["Playfair Display"],
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
+  variants: {
+    scrollbar: ["rounded"],
+  },
 };
