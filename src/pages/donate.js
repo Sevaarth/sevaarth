@@ -1,8 +1,11 @@
+import Donation from "@/components/ui/Donate";
+
 const Donate = () => {
   return (
-    <div className="bg-red-500 min-h-screen">
-      <h1 className="text-white text-4xl text-center py-20">Donation Page</h1>
-      {/* Other content here */}
+    <div className="bg-[#a5b3bf20]">
+      <div id="donate">
+        <Donation />
+      </div>
     </div>
   );
 };
