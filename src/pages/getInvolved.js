@@ -1,12 +1,11 @@
-import Donate from "@/components/ui/Donate";
 import SignUp from "@/components/ui/SignUp";
 
 export default function GetInvolved() {
   return (
     <div className="bg-[#a5b3bf20]">
-      <div id="donate">
+      {/* <div id="donate">
         <Donate />
-      </div>
+      </div> */}
       <div id="volunteer">
         <SignUp />
       </div>

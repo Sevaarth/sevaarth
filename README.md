@@ -1,14 +1,17 @@
+# Sevaarth - Organisation India
 
-# Sevaarth - Organisation India  
-[![Next.js](https://img.shields.io/badge/Next.js-11.1.2-blue.svg)](https://nextjs.org/) [![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)](#contributing)  
-<!-- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) -->  
+[![Next.js](https://img.shields.io/badge/Next.js-11.1.2-blue.svg)](https://nextjs.org/) [![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)](#contributing)
+
+<!-- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) -->
 
 **Sevaarth** is a nonprofit organization focused on uplifting underserved communities, including the elderly, children, and women, while promoting environmental sustainability. This repository houses the official website of Sevaarth, built with Next.js, offering an intuitive platform to share our mission, promote initiatives, and encourage contributions.
 
-### 🌐 [Live Website](https://sevaarth.vercel.app)  
+### 🌐 [Live Website](https://sevaarth.vercel.app)
+
 &nbsp;
 
 ## 📑 Table of Contents
+
 - [About Sevaarth](#about-sevaarth)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
@@ -34,26 +37,31 @@
 
 ## ⚙️ Features
 
-### **Homepage**  
+### **Homepage**
+
 - Showcases Sevaarth's mission and goals.
 - Call-to-action buttons for donations, volunteering, and partnerships.
 
-### **Our Initiatives**  
+### **Our Initiatives**
+
 - **Elderly Support**: Supplies and assistance for senior citizens.
 - **Child Education Sponsorship**: Funding for children's education.
 - **Women Empowerment**: Vocational training and economic support.
 - **Environmental Care**: Tree plantations and sustainability efforts.
 
-### **Get Involved**  
+### **Get Involved**
+
 - Forms for **Donations** and **Volunteering**.
 - Real-time updates on ongoing campaigns and projects.
 
-### **Blog/News Section**  
+### **Blog/News Section**
+
 - Latest updates, success stories, and upcoming events.
 
 &nbsp;
 
 ## 🛠️ Technologies Used
+
 - **Next.js**: For server-side rendering and static site generation.
 - **React.js**: To build a dynamic user interface.
 - **Tailwind CSS**: Utility-first CSS framework for responsive, modern designs.
@@ -65,18 +73,22 @@
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 Ensure you have the following installed:
+
 - **Node.js** (v14.x or higher)
 - **npm** (v6.x or higher)
 
 ### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/rai-09/sevaarth.git
    ```
 
 2. **Navigate to the project directory**:
+
    ```bash
    cd sevaarth-nextjs
    ```
@@ -89,6 +101,7 @@ Ensure you have the following installed:
 ### Running Locally
 
 1. **Start the development server**:
+
    ```bash
    npm run dev
    ```
@@ -114,7 +127,6 @@ Ensure you have the following installed:
 ```
 
 &nbsp;
-
 
 ## ✅ Best Practices
 

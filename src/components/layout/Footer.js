@@ -10,6 +10,45 @@ import {
 } from "react-icons/fa";
 import config from "@/lib/config";
 
+const FooterLink = ({ title, links }) => {
+  const linkPaths = {
+    Donate: "/support/donate",
+    Partnerships: "/support/partnerships",
+    Sponsorships: "/support/sponsorships",
+    Fundraising: "/support/fundraising",
+    Blog: "/resources/blog",
+    Events: "/resources/events",
+    "Volunteer Opportunities": "/resources/volunteer-opportunities",
+    FAQs: "/resources/faq",
+    "Privacy Policy": "/resources/privacy-policy",
+    "Our Mission": "/about/our-mission",
+    "Our Work": "/about/our-work",
+    "Get Involved": "/about/get-involved",
+  };
+
+  return (
+    <div className="w-full sm:w-1/2 lg:w-1/4 px-4 mb-6">
+      <h2 className="text-green-300 font-bold tracking-widest text-md mb-3">
+        {title}
+      </h2>
+      <nav className="list-none">
+        {links.map((link, index) => (
+          <li key={index} className="mb-2">
+            <a
+              className="hover:underline text-gray-300"
+              href={linkPaths[link]}
+              // target="_blank"
+              // rel="noopener noreferrer"
+            >
+              {link}
+            </a>
+          </li>
+        ))}
+      </nav>
+    </div>
+  );
+};
+
 const Footer = () => {
   const footerLinks = [
     {
@@ -18,7 +57,13 @@ const Footer = () => {
     },
     {
       title: "Resources",
-      links: ["Blog", "Events", "Volunteer Opportunities", "FAQs"],
+      links: [
+        "Blog",
+        "Events",
+        "Volunteer Opportunities",
+        "FAQs",
+        "Privacy Policy",
+      ],
     },
     {
       title: "About Us",
@@ -48,6 +93,7 @@ const Footer = () => {
               target="_blank"
               aria-label="Facebook"
               className="transition-transform transform hover:scale-110"
+              rel="noopener noreferrer"
             >
               <FaFacebookF className="h-6 w-6" />
             </a>
@@ -56,6 +102,7 @@ const Footer = () => {
               target="_blank"
               aria-label="Instagram"
               className="transition-transform transform hover:scale-110"
+              rel="noopener noreferrer"
             >
               <FaInstagram className="h-6 w-6" />
             </a>
@@ -64,6 +111,7 @@ const Footer = () => {
               target="_blank"
               aria-label="X (Twitter)"
               className="transition-transform transform hover:scale-110"
+              rel="noopener noreferrer"
             >
               <FaTwitter className="h-6 w-6" />
             </a>
@@ -72,6 +120,7 @@ const Footer = () => {
               target="_blank"
               aria-label="LinkedIn"
               className="transition-transform transform hover:scale-110"
+              rel="noopener noreferrer"
             >
               <FaLinkedin className="h-6 w-6" />
             </a>
@@ -81,20 +130,11 @@ const Footer = () => {
         {/* Footer links */}
         <div className="w-full md:w-2/3 flex-grow flex flex-wrap justify-between text-center md:text-left">
           {footerLinks.map((section, index) => (
-            <div key={index} className="w-full sm:w-1/2 lg:w-1/4 px-4 mb-6">
-              <h2 className="text-green-300 font-bold tracking-widest text-md mb-3">
-                {section.title}
-              </h2>
-              <nav className="list-none">
-                {section.links.map((link, index) => (
-                  <li key={index} className="mb-2">
-                    <a className="hover:underline text-gray-300" href="#">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </nav>
-            </div>
+            <FooterLink
+              key={index}
+              title={section.title}
+              links={section.links}
+            />
           ))}
 
           {/* Stay Connected section */}
@@ -128,6 +168,8 @@ const Footer = () => {
               <a
                 href={`mailto:${config.contact.email}`}
                 className="hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 {config.contact.email}
               </a>

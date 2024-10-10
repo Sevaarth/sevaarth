@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Heart,
   Users,
@@ -168,91 +168,70 @@ const InitiativeCard = ({
 };
 
 const OurInitiatives = () => {
-  const cards = [
-    {
-      imageSrc: "/images/elderly.jpg",
-      imageAlt: "Elderly Care",
-      title: "Supporting Elderly Individuals",
-      category: "Elder Care",
-      impact: "500+ Seniors Helped",
-      location: "Multiple Locations",
-      nextEvent: "Monthly Wellness Check - Every First Sunday",
-      description:
-        "The primary focus of Sevaarth is to assist seniors who are experiencing financial difficulties. Many elderly individuals live on fixed incomes, which can make it challenging to afford basic necessities. By providing support, we aim to alleviate some of the financial burdens they face.",
-    },
-    {
-      imageSrc: "/images/education.jpg",
-      imageAlt: "Child Education",
-      title: "Underprivileged Child Education",
-      category: "Education",
-      impact: "1000+ Children Educated",
-      location: "Urban & Rural Areas",
-      nextEvent: "Back-to-School Supply Drive - August 15",
-      description:
-        "Education is a powerful tool that can help lift families out of poverty. By providing educational support to children, we aim to create opportunities for them to succeed and build a better future. Every child has unique talents and abilities.",
-    },
-    {
-      imageSrc: "/images/cloth.jpg",
-      imageAlt: "Cloth Collection & Donation",
-      title: "Cloth Collection & Donation",
-      category: "Basic Needs",
-      impact: "5000+ People Clothed",
-      location: "Donation Centers",
-      nextEvent: "Winter Clothing Drive - Starting Soon",
-      description:
-        "Collecting and distributing clothes to those in need, fostering a spirit of giving and community support. We ensure dignity and respect in our distribution process while meeting the essential clothing needs of vulnerable populations.",
-    },
-    {
-      imageSrc: "/images/health.jpg",
-      imageAlt: "Health Initiatives",
-      title: "Health Sector Initiatives",
-      category: "Healthcare",
-      impact: "2000+ Patients Served",
-      location: "Nationwide",
-      nextEvent: "Free Medical Camp - Every Month",
-      description:
-        "Committed to enhancing healthcare services and access for communities through innovative and sustainable health programs. We focus on preventive care, health education, and improving access to quality medical services.",
-    },
-    {
-      imageSrc: "/images/women.jpg",
-      imageAlt: "Women Empowerment",
-      title: "Women Empowerment",
-      category: "Gender Equality",
-      impact: "750+ Women Empowered",
-      location: "Community Centers",
-      nextEvent: "Skill Development Workshop - Weekends",
-      description:
-        "Empowering women through education, skill development, and leadership opportunities. Our programs focus on financial literacy, entrepreneurship training, and creating safe spaces for women to grow and thrive in their communities.",
-    },
-    {
-      imageSrc: "/images/plantation.jpg",
-      imageAlt: "Plantation and Cleanliness",
-      title: "Green Earth Initiative",
-      category: "Environment",
-      impact: "10000+ Trees Planted",
-      location: "Various Cities",
-      nextEvent: "Community Cleanup Drive - This Sunday",
-      description:
-        "Promoting environmental sustainability through tree planting and cleanliness drives. We organize regular community events to plant trees, maintain public spaces, and raise awareness about environmental conservation.",
-    },
-  ];
+  const [initiatives, setInitiatives] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchInitiatives = async () => {
+      try {
+        const response = await fetch("/api/initiatives");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+
+        // Check if the data is an array and set it
+        if (Array.isArray(data)) {
+          setInitiatives(data);
+        } else {
+          setError("Unexpected data format");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInitiatives();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <h2 className="text-2xl font-bold">Loading initiatives...</h2>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <h2 className="text-2xl font-bold text-red-500">Error: {error}</h2>
+      </div>
+    );
+  }
 
   return (
     <section className="bg-emerald-50 min-h-screen py-12">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold  mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Our Initiatives
           </h1>
-          <p className=" text-lg max-w-2xl mx-auto">
+          <p className="text-lg max-w-2xl mx-auto">
             Join us in making a difference. Every action counts, every life
             matters.
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {cards.map((card, index) => (
-            <InitiativeCard key={`initiative-${index}`} {...card} />
+        {/* Adjust grid based on number of initiatives */}
+        <div
+          className={`grid gap-8 ${initiatives.length === 1 ? "grid-cols-1" : initiatives.length === 2 ? "grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}
+        >
+          {initiatives.map((initiative, index) => (
+            <InitiativeCard key={`initiative-${index}`} {...initiative} />
           ))}
         </div>
       </div>

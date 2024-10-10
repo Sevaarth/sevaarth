@@ -13,6 +13,10 @@ export default (phase, { defaultConfig }) => {
           protocol: "https",
           hostname: "24ai.tech",
         },
+        {
+          protocol: "https",
+          hostname: "example.com",
+        },
       ],
     },
   };
